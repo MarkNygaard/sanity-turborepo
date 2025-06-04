@@ -5,6 +5,7 @@ import { hiddenDocTypes } from './hiddenDocTypes'
 import { internationalisedHomePagesStructure } from './internationalisedHomePagesStructure'
 import { internationalisedPagesStructure } from './internationalisedPagesStructure'
 import { personalStructure } from './personalStructure'
+import { internationalisedSettingsStructure } from './internationalisedSettingsStructure'
 
 /** # Structure Tool with Custom Structure list
  *
@@ -13,6 +14,10 @@ import { personalStructure } from './personalStructure'
  * ## AI Assist context document type
  *
  * the `assist.instruction.context` document type is hidden here {@link hiddenDocTypes}
+ *
+ * ## Translation metadata
+ *
+ * the `translation.metadata` document type is hidden and managed automatically by the document-internationalization plugin
  *
  * (go to the Template Structure to work on those)
  */
@@ -43,9 +48,9 @@ export const customStructure = async (
           S.list()
             .title('Sources & Settings')
             .items([
+              await internationalisedSettingsStructure(S, context),
               S.documentTypeListItem('language').title('Languages'),
               S.documentTypeListItem('market').title('Markets'),
-              S.documentTypeListItem('translation.metadata').title('Translation Metadata'),
               S.divider(),
               S.documentTypeListItem('person').title('Studio Members (persons)'),
               S.divider(),

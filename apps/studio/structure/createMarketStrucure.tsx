@@ -1,4 +1,4 @@
-import { TbHome } from 'react-icons/tb'
+import { TbHome, TbSettings } from 'react-icons/tb'
 import { StructureBuilder, StructureResolverContext } from 'sanity/structure'
 import { PagePreviewMedia } from '../components/previews/PagePreview'
 import { apiVersion } from '../lib/api'
@@ -67,14 +67,45 @@ export function createMarketStructure(
 
       S.divider(),
 
-      // Site Settings Section
+      // Site Settings Section - ADD THIS SECTION
       S.listItem()
         .title('Site Settings')
         .child(
           S.list()
             .title('Site Settings')
             .items([
-              S.documentTypeListItem('translation.metadata').title('Translation Metadata'),
+              // Settings for each language
+              S.listItem()
+                .title('Settings')
+                .icon(TbSettings)
+                .child(
+                  S.list()
+                    .title(`${market.title} Settings`)
+                    .items(
+                      market.languages.map((language) => {
+                        const settingsId = `settings-${market.code}-${language.code}`
+                        const isDefault = language.isDefault || false
+
+                        return S.listItem()
+                          .title(`${language.title} Settings${isDefault ? ' (Default)' : ''}`)
+                          .id(`settings-${market.code}-${language.code}`)
+                          .icon(() => <PagePreviewMedia language={language.code} />)
+                          .child(
+                            S.editor()
+                              .id(settingsId)
+                              .schemaType('settings')
+                              .documentId(settingsId)
+                              .title(`${market.title} Settings (${language.title})`)
+                              .views([S.view.form()])
+                              .initialValueTemplate('market-settings', {
+                                language: language.code,
+                                market: market.code,
+                                marketTitle: market.title,
+                              }),
+                          )
+                      }),
+                    ),
+                ),
               S.divider(),
             ]),
         ),

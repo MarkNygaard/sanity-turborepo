@@ -21,6 +21,9 @@ export const hiddenDocTypes = (listItem: any) =>
     'translation.metadata',
     'media.tag',
 
+    // Singleton-like documents managed through custom structure
+    'settings',
+
     // All Singletons
     ...allSingletonTypeNames,
   ].includes(listItem.getId())

@@ -30,4 +30,23 @@ export const templates: TemplateResolver = (prev: Template<any, any>[], context:
       }
     },
   },
+  {
+    id: 'market-settings',
+    title: 'Market Settings',
+    schemaType: 'settings',
+    parameters: [
+      { name: 'language', type: 'string' },
+      { name: 'market', type: 'string' },
+      { name: 'marketTitle', type: 'string' },
+    ],
+    value: (params: { language: string; market: string; marketTitle: string }) => {
+      return {
+        label: `${params.marketTitle} Settings (${params.language.toUpperCase()})`,
+        siteTitle: `DILLING - ${params.marketTitle}`,
+        siteDescription: `Organic underwear and clothing from DILLING for the ${params.marketTitle} market`,
+        language: params.language,
+        market: params.market,
+      }
+    },
+  },
 ]

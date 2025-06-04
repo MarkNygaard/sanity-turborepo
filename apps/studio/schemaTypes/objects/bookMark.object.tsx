@@ -9,7 +9,13 @@ export default defineType({
       name: 'reference',
       title: 'Reference',
       type: 'reference',
-      to: [{ type: 'page' }, { type: 'market' }, { type: 'person' }, { type: 'language' }],
+      to: [
+        { type: 'page' },
+        { type: 'market' },
+        { type: 'person' },
+        { type: 'language' },
+        { type: 'settings' },
+      ],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -22,11 +28,12 @@ export default defineType({
     select: {
       referenceName: 'reference.name',
       referenceTitle: 'reference.title',
+      referenceSiteTitle: 'reference.siteTitle',
       subtitle: 'note',
     },
     prepare(selection) {
       return {
-        title: selection.referenceName || selection.referenceTitle,
+        title: selection.referenceName || selection.referenceTitle || selection.referenceSiteTitle,
         subtitle: selection.subtitle,
       }
     },
