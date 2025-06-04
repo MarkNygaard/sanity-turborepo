@@ -2,6 +2,7 @@ import { CogIcon } from '@sanity/icons'
 import { StructureBuilder, StructureResolverContext } from 'sanity/structure'
 import { Person } from '../schemaTypes/documents/person.document'
 import { hiddenDocTypes } from './hiddenDocTypes'
+import { internationalisedHomePagesStructure } from './internationalisedHomePagesStructure'
 import { internationalisedPagesStructure } from './internationalisedPagesStructure'
 import { personalStructure } from './personalStructure'
 
@@ -24,9 +25,17 @@ export const customStructure = async (
     .title('Content')
     .items([
       await personalStructure(S, context, person),
+
+      // Internationalized Home Pages
+      await internationalisedHomePagesStructure(S, context),
+
+      S.divider(),
+
       S.listItem().title(`All Pages`).child(S.documentTypeList('page').title('Pages')),
       await internationalisedPagesStructure(S, context),
+
       S.divider(),
+
       S.listItem()
         .title('Sources & Settings')
         .icon(CogIcon)

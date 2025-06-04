@@ -1,3 +1,4 @@
+import homePageDocument from './documents/homePage.document'
 import languageDocument from './documents/language.document'
 import marketDocument from './documents/market.document'
 import pageDocument from './documents/page.document'
@@ -8,6 +9,7 @@ import body from './portableText/body'
 export const schemaTypes = [
   // Documents
   pageDocument,
+  homePageDocument,
 
   languageDocument,
 

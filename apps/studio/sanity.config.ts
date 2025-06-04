@@ -77,7 +77,7 @@ async function getConfigBasedOnMarkets(): Promise<Config> {
                 // Optional extra filter for document types.
                 // If not set, translation is enabled for all documents
                 // that has a field with the name defined above.
-                documentTypes: ['page'],
+                documentTypes: ['page', 'homePage'],
               },
               field: {
                 languages: async (client) => {
@@ -118,7 +118,7 @@ async function getConfigBasedOnMarkets(): Promise<Config> {
               // Optional extra filter for document types.
               // If not set, translation is enabled for all documents
               // that has a field with the name defined above.
-              documentTypes: ['page'],
+              documentTypes: ['page', 'homePage'],
             },
             field: {
               languages: market.languages.map((lang) => {
@@ -152,7 +152,7 @@ async function getConfigBasedOnMarkets(): Promise<Config> {
               // Optional extra filter for document types.
               // If not set, translation is enabled for all documents
               // that has a field with the name defined above.
-              documentTypes: ['page'],
+              documentTypes: ['page', 'homePage'],
             },
             field: {
               languages: languagesMarketsAndPerson.languages.map((lang) => {

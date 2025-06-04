@@ -1,4 +1,5 @@
-const allSingletonTypeNames: string[] = []
+const allSingletonTypeNames: string[] = ['homePage']
+
 /** # Hidden document types
  *
  * This is a list of all the document types that should be hidden from the auto-generated document type lists in the structure builder.
@@ -6,7 +7,7 @@ const allSingletonTypeNames: string[] = []
  * This includes:
  *
  * - all the singletons imported from the `singletons` folder
- *
+ * - the `homePage` singleton (managed through market-specific structures)
  * - the `assist.instruction.context` document type (go to the Template Structure to work on those)
  *
  *
