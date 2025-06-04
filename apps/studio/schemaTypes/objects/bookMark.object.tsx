@@ -15,6 +15,8 @@ export default defineType({
         { type: 'person' },
         { type: 'language' },
         { type: 'settings' },
+        { type: 'navigation' },
+        { type: 'footer' },
       ],
       validation: (Rule) => Rule.required(),
     }),
@@ -29,11 +31,16 @@ export default defineType({
       referenceName: 'reference.name',
       referenceTitle: 'reference.title',
       referenceSiteTitle: 'reference.siteTitle',
+      referenceLabel: 'reference.label',
       subtitle: 'note',
     },
     prepare(selection) {
       return {
-        title: selection.referenceName || selection.referenceTitle || selection.referenceSiteTitle,
+        title:
+          selection.referenceName ||
+          selection.referenceTitle ||
+          selection.referenceSiteTitle ||
+          selection.referenceLabel,
         subtitle: selection.subtitle,
       }
     },

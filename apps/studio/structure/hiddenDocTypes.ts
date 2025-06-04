@@ -23,6 +23,8 @@ export const hiddenDocTypes = (listItem: any) =>
 
     // Singleton-like documents managed through custom structure
     'settings',
+    'navigation',
+    'footer',
 
     // All Singletons
     ...allSingletonTypeNames,

@@ -6,6 +6,8 @@ import { internationalisedHomePagesStructure } from './internationalisedHomePage
 import { internationalisedPagesStructure } from './internationalisedPagesStructure'
 import { personalStructure } from './personalStructure'
 import { internationalisedSettingsStructure } from './internationalisedSettingsStructure'
+import { internationalisedNavigationStructure } from './internationalisedNavigationStructure'
+import { internationalisedFooterStructure } from './internationalisedFooterStructure'
 
 /** # Structure Tool with Custom Structure list
  *
@@ -49,6 +51,8 @@ export const customStructure = async (
             .title('Sources & Settings')
             .items([
               await internationalisedSettingsStructure(S, context),
+              await internationalisedNavigationStructure(S, context),
+              await internationalisedFooterStructure(S, context),
               S.divider(),
               S.documentTypeListItem('language').title('Languages'),
               S.documentTypeListItem('market').title('Markets'),

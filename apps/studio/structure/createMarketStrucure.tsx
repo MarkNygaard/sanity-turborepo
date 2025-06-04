@@ -1,4 +1,4 @@
-import { TbHome, TbSettings } from 'react-icons/tb'
+import { TbHome, TbLayoutBottombar, TbMenu2, TbSettings } from 'react-icons/tb'
 import { StructureBuilder, StructureResolverContext } from 'sanity/structure'
 import { PagePreviewMedia } from '../components/previews/PagePreview'
 import { apiVersion } from '../lib/api'
@@ -67,7 +67,7 @@ export function createMarketStructure(
 
       S.divider(),
 
-      // Site Settings Section - ADD THIS SECTION
+      // Site Settings Section
       S.listItem()
         .title('Site Settings')
         .child(
@@ -98,6 +98,70 @@ export function createMarketStructure(
                               .title(`${market.title} Settings (${language.title})`)
                               .views([S.view.form()])
                               .initialValueTemplate('market-settings', {
+                                language: language.code,
+                                market: market.code,
+                                marketTitle: market.title,
+                              }),
+                          )
+                      }),
+                    ),
+                ),
+              // Navigation for each language
+              S.listItem()
+                .title('Navigation')
+                .icon(TbMenu2)
+                .child(
+                  S.list()
+                    .title(`${market.title} Navigation`)
+                    .items(
+                      market.languages.map((language) => {
+                        const navigationId = `navigation-${market.code}-${language.code}`
+                        const isDefault = language.isDefault || false
+
+                        return S.listItem()
+                          .title(`${language.title} Navigation${isDefault ? ' (Default)' : ''}`)
+                          .id(`navigation-${market.code}-${language.code}`)
+                          .icon(() => <PagePreviewMedia language={language.code} />)
+                          .child(
+                            S.editor()
+                              .id(navigationId)
+                              .schemaType('navigation')
+                              .documentId(navigationId)
+                              .title(`${market.title} Navigation (${language.title})`)
+                              .views([S.view.form()])
+                              .initialValueTemplate('market-navigation', {
+                                language: language.code,
+                                market: market.code,
+                                marketTitle: market.title,
+                              }),
+                          )
+                      }),
+                    ),
+                ),
+              // Footer for each language - ADD THIS SECTION
+              S.listItem()
+                .title('Footer')
+                .icon(TbLayoutBottombar)
+                .child(
+                  S.list()
+                    .title(`${market.title} Footer`)
+                    .items(
+                      market.languages.map((language) => {
+                        const footerId = `footer-${market.code}-${language.code}`
+                        const isDefault = language.isDefault || false
+
+                        return S.listItem()
+                          .title(`${language.title} Footer${isDefault ? ' (Default)' : ''}`)
+                          .id(`footer-${market.code}-${language.code}`)
+                          .icon(() => <PagePreviewMedia language={language.code} />)
+                          .child(
+                            S.editor()
+                              .id(footerId)
+                              .schemaType('footer')
+                              .documentId(footerId)
+                              .title(`${market.title} Footer (${language.title})`)
+                              .views([S.view.form()])
+                              .initialValueTemplate('market-footer', {
                                 language: language.code,
                                 market: market.code,
                                 marketTitle: market.title,
