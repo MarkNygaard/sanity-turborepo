@@ -49,6 +49,7 @@ export const customStructure = async (
             .title('Sources & Settings')
             .items([
               await internationalisedSettingsStructure(S, context),
+              S.divider(),
               S.documentTypeListItem('language').title('Languages'),
               S.documentTypeListItem('market').title('Markets'),
               S.divider(),
