@@ -1,6 +1,6 @@
-// apps/studio/structure/createMarketStrucure.tsx
 import { TbHome } from 'react-icons/tb'
 import { StructureBuilder, StructureResolverContext } from 'sanity/structure'
+import { PagePreviewMedia } from '../components/previews/PagePreview'
 import { apiVersion } from '../lib/api'
 import { Market } from '../utils/fetchLanguagesMarketsAndPerson'
 
@@ -11,24 +11,40 @@ export function createMarketStructure(
 ) {
   // Find the default language for this market
   const defaultLanguage = market.languages.find((lang) => lang.isDefault) || market.languages[0]
-
-  // Create home page document ID for this market
-  const homePageId = `home-page-${market.code}-${defaultLanguage.code}`
-
   return S.list()
     .title(`${market.title} specific Content`)
     .items([
-      // Home Page Section
+      // Home Pages Section - showing all languages
       S.listItem()
-        .title(`Home Page`)
+        .title(`Home Pages`)
         .icon(TbHome)
         .child(
-          S.editor()
-            .id(homePageId)
-            .schemaType('homePage')
-            .documentId(homePageId)
-            .title(`${market.title} Home Page`)
-            .views([S.view.form()]),
+          S.list()
+            .title(`${market.title} Home Pages`)
+            .items(
+              market.languages.map((language) => {
+                const homePageId = `home-page-${market.code}-${language.code}`
+                const isDefault = language.isDefault || false
+
+                return S.listItem()
+                  .title(`${language.title} Home Page${isDefault ? ' (Default)' : ''}`)
+                  .id(`home-page-${market.code}-${language.code}`)
+                  .icon(() => <PagePreviewMedia language={language.code} />)
+                  .child(
+                    S.editor()
+                      .id(homePageId)
+                      .schemaType('homePage')
+                      .documentId(homePageId)
+                      .title(`${market.title} Home Page (${language.title})`)
+                      .views([S.view.form()])
+                      .initialValueTemplate('market-home-page', {
+                        language: language.code,
+                        market: market.code,
+                        marketTitle: market.title,
+                      }),
+                  )
+              }),
+            ),
         ),
 
       S.divider(),

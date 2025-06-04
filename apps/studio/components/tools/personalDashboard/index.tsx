@@ -19,7 +19,6 @@ function personalDashboard(
   languagesMarketsAndPerson: DashBoardProps['languagesMarketsAndPerson'],
   context: DashBoardProps['context'],
 ): Tool {
-  console.log('languagesMarketsAndPerson', languagesMarketsAndPerson, 'context', context)
   return {
     title: 'Personal dashboard',
     name: 'personal-dashboard', // localhost:3333/my-custom-tool
