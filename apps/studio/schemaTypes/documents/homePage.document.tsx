@@ -23,13 +23,14 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().error('Title is required for SEO and navigation'),
       group: 'content',
     }),
     defineField({
-      name: 'body',
-      title: 'Body',
-      type: 'body',
+      name: 'pageBuilder',
+      title: 'Page Content',
+      type: 'pageBuilder',
+      description: 'Build your home page content using flexible content blocks',
       group: 'content',
     }),
     defineField({
