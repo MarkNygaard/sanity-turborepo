@@ -1,0 +1,5 @@
+{
+  "schema": "../../apps/studio/schema.json",
+  "generates": "../../apps/web/types/sanity.ts",
+  "overloadClientMethods": true
+}
