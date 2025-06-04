@@ -13,7 +13,7 @@ export const internationalisedPagesStructure = async (
 
   const languagePages = documentStore
     .listenQuery(
-      groq`d`,
+      groq`*[_type == "language" && isDefault == true]|order(title asc){ "id": code, title, code, _id }`,
       {},
       {
         tag: 'language-based-pages-list',

@@ -21,6 +21,7 @@ export interface Market {
     code: string
     title: string
     _id: string
+    isDefault?: boolean
   }[]
 }
 
@@ -28,6 +29,7 @@ export interface LanguageDoc {
   _id: string
   title: string
   code: string
+  isDefault?: boolean
 }
 
 /** Fetches all market documents and languages
@@ -44,18 +46,19 @@ export async function fetchLanguagesMarketsAndPerson() {
         _id,
         title,
         code,
-        languages[]->{code, title, _id}
+        languages[]->{code, title, _id, isDefault}
       },
       "languages": *[_type == "language"]|order(title asc) {
         _id,
         title,
-        code
+        code,
+        isDefault
       },
       "person": *[_type == "person" && userId == $userId][0]{
         _id,
         name,
         bookmarks[]{_key, reference->{_id, "title": coalesce(title, name), _type}, note},
-        languages[]->{_id, title, code}
+        languages[]->{_id, title, code, isDefault}
       }
     }`
     let newPerson: Person | null = null
