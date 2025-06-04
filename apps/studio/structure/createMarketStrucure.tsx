@@ -51,7 +51,7 @@ export function createMarketStructure(
 
       // Pages Section
       S.listItem()
-        .title(`Pages for ${market.title} (${defaultLanguage.title})`)
+        .title('Pages')
         .child(
           S.documentTypeList('page')
             .title(`Pages (${defaultLanguage.title})`)
