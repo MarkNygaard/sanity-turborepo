@@ -74,8 +74,6 @@ export function createMarketStructure(
           S.list()
             .title('Site Settings')
             .items([
-              S.documentTypeListItem('language').title('Languages'),
-              S.documentTypeListItem('market').title('Markets'),
               S.documentTypeListItem('translation.metadata').title('Translation Metadata'),
               S.divider(),
             ]),
