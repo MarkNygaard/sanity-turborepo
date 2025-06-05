@@ -45,19 +45,33 @@ export default defineType({
     }),
     defineField({
       name: 'language',
+      title: 'Language',
       type: 'string',
-      hidden: true,
+      readOnly: true,
       group: 'settings',
+      description: 'This field is automatically managed by the system',
+    }),
+    defineField({
+      name: 'market',
+      title: 'Market',
+      type: 'string',
+      readOnly: true,
+      group: 'settings',
+      description: 'This field is automatically managed by the system',
     }),
   ],
   preview: {
     select: {
       title: 'title',
       language: 'language',
+      market: 'market',
     },
-    prepare({ title, language }) {
+    prepare({ title, language, market }) {
+      const subtitle = `${market?.toUpperCase() || 'Global'}${language ? ` • ${language.toUpperCase()}` : ''}`
+
       return {
         title,
+        subtitle,
         media: language ? <PagePreviewMedia language={language} /> : undefined,
       }
     },

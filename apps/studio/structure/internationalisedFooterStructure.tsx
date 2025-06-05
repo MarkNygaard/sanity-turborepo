@@ -113,7 +113,12 @@ export const internationalisedFooterStructure = async (
                     .schemaType('footer')
                     .documentId(footerId)
                     .title(`${market.title} Footer (${language.title})`)
-                    .views([S.view.form()]),
+                    .views([S.view.form()])
+                    .initialValueTemplate('market-footer', {
+                      language: language.code,
+                      market: market.code,
+                      marketTitle: market.title,
+                    }),
                 )
             })
 

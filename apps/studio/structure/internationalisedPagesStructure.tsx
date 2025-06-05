@@ -13,36 +13,78 @@ export const internationalisedPagesStructure = async (
 
   const languagePages = documentStore
     .listenQuery(
-      groq`*[_type == "language" && isDefault == true]|order(title asc){ "id": code, title, code, _id }`,
+      groq`{
+        "markets": *[_type == "market"]|order(title asc) {
+          _id,
+          title,
+          code,
+          "languages": languages[]->{code, title, _id, isDefault}
+        }
+      }`,
       {},
       {
         tag: 'language-based-pages-list',
       },
     )
     .pipe(
-      map((languages) => {
+      map((data) => {
+        if (!data || !data.markets || !Array.isArray(data.markets)) {
+          return S.list()
+            .title('Internationalised Pages')
+            .items([
+              S.listItem()
+                .title('No markets found')
+                .id('no-markets-pages')
+                .child(S.documentList().title('No Markets').filter('_type == "market"')),
+            ])
+        }
+
+        const allPageCombinations = []
+
+        for (const market of data.markets) {
+          if (!market.languages || !Array.isArray(market.languages)) {
+            continue
+          }
+
+          for (const language of market.languages) {
+            const isDefault = language.isDefault === true
+
+            allPageCombinations.push({
+              market,
+              language,
+              isDefault,
+            })
+          }
+        }
+
         return S.list()
           .title('Internationalised Pages')
           .items(
-            languages.map((language: { title: string; code: string; _id: string }) => {
+            allPageCombinations.map(({ market, language, isDefault }) => {
               return S.listItem()
-                .title(language.title + ' Pages')
-                .id(`pages-list-${language.code}`)
+                .title(`${market.title} - ${language.title} Pages${isDefault ? ' (Default)' : ''}`)
+                .id(`pages-list-${market.code}-${language.code}`)
                 .icon(() => <PagePreviewMedia language={language.code} />)
                 .child(
                   S.documentTypeList('page')
-                    .title(language.title + ' Pages')
-                    .filter(`_type == "page" && language == "${language.code}"`)
+                    .title(`${market.title} - ${language.title} Pages`)
+                    .filter(
+                      `_type == "page" && language == "${language.code}" && market == "${market.code}"`,
+                    )
                     .apiVersion(apiVersion)
                     .canHandleIntent(
                       S.documentTypeList('page')
-                        .filter(`_type == "page" && language == "${language.code}"`)
+                        .filter(
+                          `_type == "page" && language == "${language.code}" && market == "${market.code}"`,
+                        )
                         .apiVersion(apiVersion)
                         .getCanHandleIntent(),
                     )
                     .initialValueTemplates([
                       S.initialValueTemplateItem('internationalised-page', {
                         language: language.code,
+                        market: market.code,
+                        marketTitle: market.title,
                       }),
                     ]),
                 )

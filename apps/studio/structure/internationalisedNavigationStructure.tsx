@@ -114,7 +114,12 @@ export const internationalisedNavigationStructure = async (
                       .schemaType('navigation')
                       .documentId(navigationId)
                       .title(`${market.title} Navigation (${language.title})`)
-                      .views([S.view.form()]),
+                      .views([S.view.form()])
+                      .initialValueTemplate('market-navigation', {
+                        language: language.code,
+                        market: market.code,
+                        marketTitle: market.title,
+                      }),
                   )
               },
             )

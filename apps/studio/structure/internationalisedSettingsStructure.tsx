@@ -114,7 +114,12 @@ export const internationalisedSettingsStructure = async (
                       .schemaType('settings')
                       .documentId(settingsId)
                       .title(`${market.title} Settings (${language.title})`)
-                      .views([S.view.form()]),
+                      .views([S.view.form()])
+                      .initialValueTemplate('market-settings', {
+                        language: language.code,
+                        market: market.code,
+                        marketTitle: market.title,
+                      }),
                   )
               },
             )
