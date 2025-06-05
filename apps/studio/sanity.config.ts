@@ -115,7 +115,7 @@ async function getConfigBasedOnMarkets(): Promise<Config> {
             },
           },
         }),
-        presentationUrl({ market }),
+        presentationUrl(),
         visionTool(),
 
         dynamicDocumentInternationalisationConfigForMarkets(market.languages),

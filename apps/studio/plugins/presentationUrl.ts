@@ -47,9 +47,6 @@ export const presentationUrl = definePlugin(() => {
                   previewPath = `/${slug}`
                 }
 
-                // Add language and market parameters if they exist
-                const searchParams = new URLSearchParams()
-
                 const fullPreviewPath = `${previewPath}/${language}`
 
                 try {
