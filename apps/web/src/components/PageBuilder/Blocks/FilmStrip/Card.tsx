@@ -16,7 +16,7 @@ export default function Card({ card }: CardProps) {
         <div className="relative w-full min-w-[300px] md:min-w-[600px] lg:min-w-[300px]">
           <Image
             src={urlFor(card.image).width(600).height(800).url()}
-            alt={card.image.alt ?? ""}
+            alt={card.image.alt}
             width={600}
             height={800}
           />

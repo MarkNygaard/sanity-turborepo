@@ -1,6 +1,7 @@
 import type { HomePage } from "types/sanity";
 import PageBuilder from "components/PageBuilder";
-import { homeQuery } from "lib/sanity/query";
+import { div } from "framer-motion/client";
+import { HOME_PAGE_QUERY } from "lib/sanity/query";
 import { getLocale } from "next-intl/server";
 
 // import { getMetaData } from "utils/seo";
@@ -9,9 +10,9 @@ import { sanityFetch } from "@repo/sanity";
 
 async function fetchHomePageData() {
   const locale = await getLocale();
-  const docId = `homePage-${locale}`;
+  const docId = `home-page-UK-${locale}`;
   const result = await sanityFetch({
-    query: homeQuery,
+    query: HOME_PAGE_QUERY,
     params: { docId },
   });
   return result.data as HomePage;
@@ -25,6 +26,8 @@ async function fetchHomePageData() {
 
 export default async function HomePage() {
   const data = await fetchHomePageData();
+
+  console.log("HomePage data:", data);
 
   if (!data.pageBuilder) return null;
 

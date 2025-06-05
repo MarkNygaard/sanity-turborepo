@@ -1,9 +1,9 @@
 "use client";
 
+import type { LinkRecord, UploadVideoField } from "types/datocms";
 import { useEffect, useState } from "react";
 import MuxPlayer from "@mux/mux-player-react";
 import PrimitiveLink from "components/Primitives/Link";
-import { LinkRecord, UploadVideoField } from "types/datocms";
 
 import {
   CarouselAutoplayToggle,

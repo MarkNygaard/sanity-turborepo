@@ -22,7 +22,7 @@ export function Slide({ content, slideCount }: SlideProps) {
           <div className="absolute inset-0 z-0">
             <Image
               src={urlFor(content.image).url()}
-              alt={content.image.alt ?? content.title ?? ""}
+              alt={content.image.alt}
               fill
               className="object-cover"
               priority

@@ -18,7 +18,7 @@ export default function Accordion({
   panels,
   isDraftMode = false,
 }: AccordionProps) {
-  if (!panels || panels.length === 0) return null;
+  if (panels.length === 0) return null;
 
   return (
     <Container className="max-w-7xl py-12">

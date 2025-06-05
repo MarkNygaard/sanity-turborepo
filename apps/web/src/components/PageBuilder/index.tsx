@@ -14,11 +14,9 @@ interface PageBuilderProps {
 }
 
 export default function PageBuilder({ blocks }: PageBuilderProps) {
-  if (!blocks) return null;
-
   return (
     <>
-      {blocks?.map((block) => {
+      {blocks.map((block) => {
         switch (block._type) {
           case "hero":
             return <HeroBlock key={block._key} {...(block as Hero)} />;
