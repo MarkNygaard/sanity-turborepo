@@ -30,10 +30,10 @@ export function createMarketWorkspace({
     dataset,
     basePath: `/market-${market.code}`,
     plugins: [
+      ...createMarketPlugins(market),
       structureTool({
         structure: (S, context) => createMarketStructure(market, S, context),
       }),
-      ...createMarketPlugins(market),
       visionTool(),
       dynamicDocumentInternationalisationConfigForMarkets(market.languages),
       fieldLevelInternationalisationConfigForMarkets(market.languages),

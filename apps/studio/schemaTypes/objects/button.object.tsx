@@ -58,7 +58,39 @@ export const button = defineType({
       to: [{ type: 'page' }],
       options: {
         filter: ({ document }) => {
-          const currentLang = document?.language || 'en'
+          let currentLang = null
+
+          // Method 1: Try to get language from document field
+          if (document?.language) {
+            currentLang = document.language
+          }
+
+          // Method 2: Extract language from document ID pattern
+          if (!currentLang && document?._id) {
+            // Pattern: home-page-{market}-{language} or settings-{market}-{language}
+            const idParts = document._id.replace('drafts.', '').split('-')
+
+            if (idParts.length >= 3) {
+              // For home-page-EU-en-EU: ["home", "page", "EU", "en", "EU"]
+              // We want the language part which is "en-EU"
+              if (idParts.length === 5 && (idParts[0] === 'home' || idParts[0] === 'settings')) {
+                // Reconstruct language code: en-EU
+                currentLang = `${idParts[3]}-${idParts[4]}`
+              } else if (idParts.length === 4) {
+                // For pattern like "navigation-EU-en-EU": ["navigation", "EU", "en", "EU"]
+                currentLang = `${idParts[2]}-${idParts[3]}`
+              }
+            }
+          }
+
+          // Method 3: Fallback to show all pages if we can't determine language
+          if (!currentLang) {
+            console.warn('Could not determine language context. Showing all pages.')
+            return {
+              filter: '_type == "page"',
+              params: {},
+            }
+          }
           return {
             filter: 'language == $lang',
             params: {
