@@ -59,8 +59,10 @@ export function createMarketStructure(
             .params({ defaultLanguage: defaultLanguage.code })
             .apiVersion(apiVersion)
             .initialValueTemplates([
-              S.initialValueTemplateItem('internationalised-page', {
+              S.initialValueTemplateItem('market-page', {
                 language: defaultLanguage.code,
+                market: market.code,
+                marketTitle: market.title,
               }),
             ]),
         ),

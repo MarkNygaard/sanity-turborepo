@@ -81,7 +81,7 @@ export const internationalisedPagesStructure = async (
                         .getCanHandleIntent(),
                     )
                     .initialValueTemplates([
-                      S.initialValueTemplateItem('internationalised-page', {
+                      S.initialValueTemplateItem('market-page', {
                         language: language.code,
                         market: market.code,
                         marketTitle: market.title,
