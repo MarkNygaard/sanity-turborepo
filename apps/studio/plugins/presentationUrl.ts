@@ -37,25 +37,31 @@ export const presentationUrl = definePlugin(() => {
                   typeof value === 'string' && value.trim() !== ''
 
                 // Determine the preview path based on document type and available fields
-                let previewPath = '/'
+                let previewPath = ''
 
-                if (documentType === 'page' && isString(slug)) {
-                  previewPath = `/${slug}`
-                } else if (documentType === 'homePage') {
-                  previewPath = '/'
+                if (documentType === 'homePage') {
+                  // For home pages, use just the language as the path
+                  previewPath = isString(language) ? `/${language}` : '/'
+                } else if (documentType === 'page' && isString(slug)) {
+                  // For regular pages, include both slug and language
+                  const langPath = isString(language) ? `/${language}` : ''
+                  previewPath = `${langPath}/${slug}`
                 } else if (isString(slug)) {
-                  previewPath = `/${slug}`
+                  // Fallback for other document types with slugs
+                  const langPath = isString(language) ? `/${language}` : ''
+                  previewPath = `${langPath}/${slug}`
+                } else {
+                  // Fallback to language path or root
+                  previewPath = isString(language) ? `/${language}` : '/'
                 }
-
-                const fullPreviewPath = `${previewPath}/${language}`
 
                 try {
                   // Get the current workspace base path to maintain context
                   const currentPath = router.state.space || ''
 
-                  // Construct the full preview URL (similar to your working example)
+                  // Construct the full preview URL
                   const baseUrl = 'http://localhost:3000' // This should match your Next.js dev server
-                  const previewUrl = `${baseUrl}${fullPreviewPath}&sanity-preview-perspective=drafts`
+                  const previewUrl = `${baseUrl}${previewPath}?preview=true`
 
                   // Navigate to presentation mode within the current workspace
                   const presentationPath = currentPath

@@ -187,7 +187,7 @@ export const pageBuilderFragment = groq`
 
 export const HOME_PAGE_QUERY = defineQuery(`*[
   _type == "homePage"
-  && _id == $docId
+  && language == $language
 ][0] {
   _id,
   _type,

@@ -1,6 +1,5 @@
 import type { HomePage } from "types/sanity";
 import PageBuilder from "components/PageBuilder";
-import { div } from "framer-motion/client";
 import { HOME_PAGE_QUERY } from "lib/sanity/query";
 import { getLocale } from "next-intl/server";
 
@@ -10,10 +9,9 @@ import { sanityFetch } from "@repo/sanity";
 
 async function fetchHomePageData() {
   const locale = await getLocale();
-  const docId = `home-page-UK-${locale}`;
   const result = await sanityFetch({
     query: HOME_PAGE_QUERY,
-    params: { docId },
+    params: { language: locale },
   });
   return result.data as HomePage;
 }
