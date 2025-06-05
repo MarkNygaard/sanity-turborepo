@@ -1,11 +1,12 @@
 "use client";
 
+import type { Locale } from "next-intl";
 import React, { useTransition } from "react";
 import { useParams } from "next/navigation";
 import { usePathname, useRouter } from "i18n/navigation";
 import { routing } from "i18n/routing";
 import { getLangNameFromCode } from "language-name-map";
-import { Locale, useLocale } from "next-intl";
+import { useLocale } from "next-intl";
 import { FaCheck, FaChevronDown, FaGlobe, FaTimes } from "react-icons/fa";
 
 import { Button } from "@repo/ui/button";
@@ -58,7 +59,7 @@ export default function LanguageSelector() {
               <DropdownMenuItem
                 key={loc}
                 className="flex cursor-pointer items-center justify-between"
-                onClick={() => handleLocaleChange(loc as Locale)}
+                onClick={() => handleLocaleChange(loc)}
               >
                 <span>
                   {getLangNameFromCode(loc)?.name ?? loc.toUpperCase()}
@@ -98,7 +99,7 @@ export default function LanguageSelector() {
                     key={loc}
                     variant="ghost"
                     className="justify-start gap-2"
-                    onClick={() => handleLocaleChange(loc as Locale)}
+                    onClick={() => handleLocaleChange(loc)}
                     disabled={isPending}
                   >
                     <FaGlobe className="h-4 w-4" />

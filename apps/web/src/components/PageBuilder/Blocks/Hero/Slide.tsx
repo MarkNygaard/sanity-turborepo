@@ -29,23 +29,22 @@ export function Slide({ content, slideCount }: SlideProps) {
             />
           </div>
 
-          {content.buttons?.length && (
-            <div className="absolute z-10 mt-16 px-4 text-white md:mt-24 lg:mt-24">
-              {content.title && (
-                <h1 className="py-2 text-5xl font-extrabold md:text-5xl">
-                  {content.title}
-                </h1>
-              )}
-              {content.subTitle && (
-                <p className="mt-2 text-lg md:text-xl">{content.subTitle}</p>
-              )}
-
+          <div className="absolute z-10 mt-16 px-4 text-white md:mt-24 lg:mt-24">
+            {content.title && (
+              <h1 className="py-2 text-5xl font-extrabold md:text-5xl">
+                {content.title}
+              </h1>
+            )}
+            {content.subTitle && (
+              <p className="mt-2 text-lg md:text-xl">{content.subTitle}</p>
+            )}
+            {content.buttons?.length && (
               <SanityButtons
                 data={content.buttons}
                 className="mt-12 flex flex-col items-center justify-center gap-4 md:flex-row md:gap-8"
               />
-            </div>
-          )}
+            )}
+          </div>
 
           {slideCount > 1 && (
             <div className="absolute bottom-8 right-12 z-20 flex">

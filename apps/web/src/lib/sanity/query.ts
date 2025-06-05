@@ -217,7 +217,6 @@ export const PAGE_QUERY = defineQuery(`*[
 export const SETTINGS_QUERY = defineQuery(`*[
   _type == "settings"
   && language == $language
-  && market == $market
 ][0] {
   _id,
   label,
@@ -256,7 +255,6 @@ export const SETTINGS_QUERY = defineQuery(`*[
 export const NAVIGATION_QUERY = defineQuery(`*[
   _type == "navigation"
   && language == $language
-  && market == $market
 ][0] {
   _id,
   label,
@@ -307,7 +305,6 @@ export const NAVIGATION_QUERY = defineQuery(`*[
 export const FOOTER_QUERY = defineQuery(`*[
   _type == "footer"
   && language == $language
-  && market == $market
 ][0] {
   _id,
   label,

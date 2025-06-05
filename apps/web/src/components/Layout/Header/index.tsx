@@ -10,19 +10,18 @@ import NavigationComponent from "./Navigation";
 
 interface HeaderProps {
   language: Promise<Locale>;
-  market: string;
 }
 
-const Header = async ({ language, market }: HeaderProps) => {
+const Header = async ({ language }: HeaderProps) => {
   // Fetch navigation and settings data from Sanity with proper typing
   const [navigationData, settingsData] = await Promise.all([
     sanityFetch({
       query: NAVIGATION_QUERY,
-      params: { language, market },
+      params: { language },
     }) as Promise<{ data: Navigation | null }>,
     sanityFetch({
       query: SETTINGS_QUERY,
-      params: { language, market },
+      params: { language },
     }) as Promise<{ data: Settings | null }>,
   ]);
 

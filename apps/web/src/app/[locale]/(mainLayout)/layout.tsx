@@ -1,7 +1,10 @@
 import type { Locale } from "next-intl";
 import type { ReactNode } from "react";
-// import Footer from "components/Layout/Footer";
+import Footer from "components/Layout/Footer";
 import Header from "components/Layout/Header";
+import { LANGUAGES_QUERY } from "lib/sanity/query";
+
+import { sanityFetch } from "@repo/sanity";
 
 // import Meta from "components/Layout/Meta";
 
@@ -15,14 +18,16 @@ interface PageParams {
 export default async function RootLayout({ children, params }: PageParams) {
   const { locale } = await params;
 
-  const [, market = ""] = locale.split("-");
+  const languages = await sanityFetch({
+    query: LANGUAGES_QUERY,
+  });
 
   return (
     <>
       {/* <Meta data={data} />*/}
-      <Header language={locale} market={market} />
+      <Header language={locale} />
       <div className="flex-1">{children}</div>
-      {/* <Footer data={data} languages={data._site.locales} /> */}
+      <Footer language={locale} languages={languages.data} />
     </>
   );
 }
