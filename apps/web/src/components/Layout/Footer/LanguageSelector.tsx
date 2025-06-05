@@ -1,10 +1,10 @@
 "use client";
 
 import type { Locale } from "next-intl";
+import type { LANGUAGES_QUERYResult } from "types/sanity";
 import React, { useTransition } from "react";
 import { useParams } from "next/navigation";
 import { usePathname, useRouter } from "i18n/navigation";
-import { routing } from "i18n/routing";
 import { getLangNameFromCode } from "language-name-map";
 import { useLocale } from "next-intl";
 import { FaCheck, FaChevronDown, FaGlobe, FaTimes } from "react-icons/fa";
@@ -23,7 +23,14 @@ import {
   DropdownMenuTrigger,
 } from "@repo/ui/dropdown-menu";
 
-export default function LanguageSelector() {
+interface LanguageSelectorProps {
+  availableLanguages: LANGUAGES_QUERYResult;
+  currentMarket?: string;
+}
+
+export default function LanguageSelector({
+  availableLanguages,
+}: LanguageSelectorProps) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
@@ -31,11 +38,48 @@ export default function LanguageSelector() {
   const locale = useLocale();
   const [isPending, startTransition] = useTransition();
 
+  // Helper function to get the display name for a language
+  const getLanguageDisplayName = (languageCode: string) => {
+    // First try to find the language from language-name-map
+    const langName = getLangNameFromCode(languageCode)?.name;
+    if (langName) {
+      return langName;
+    }
+
+    // Fallback to find the language in availableLanguages and use its title
+    const language = availableLanguages.find(
+      (lang) => lang.code === languageCode,
+    );
+    if (language?.title) {
+      return language.title;
+    }
+
+    // Final fallback to uppercase code
+    return languageCode.toUpperCase();
+  };
+
   const handleLocaleChange = (nextLocale: Locale) => {
+    // Ensure the target locale is available in the current market
+    const isLocaleAvailable = availableLanguages.some(
+      (lang) => lang.code === nextLocale,
+    );
+
+    if (!isLocaleAvailable) {
+      console.warn(
+        `Language ${nextLocale} is not available in the current market`,
+      );
+      return;
+    }
+
     startTransition(() => {
       router.replace({ pathname, params: { slug } }, { locale: nextLocale });
     });
   };
+
+  // Don't render if there's only one language available
+  if (availableLanguages.length <= 1) {
+    return null;
+  }
 
   return (
     <>
@@ -49,22 +93,18 @@ export default function LanguageSelector() {
               disabled={isPending}
             >
               <FaGlobe className="h-4 w-4" />
-              <span>
-                {getLangNameFromCode(locale)?.name ?? locale.toUpperCase()}
-              </span>
+              <span>{getLanguageDisplayName(locale)}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            {routing.locales.map((loc) => (
+            {availableLanguages.map((lang) => (
               <DropdownMenuItem
-                key={loc}
+                key={lang.code}
                 className="flex cursor-pointer items-center justify-between"
-                onClick={() => handleLocaleChange(loc)}
+                onClick={() => handleLocaleChange(lang.code)}
               >
-                <span>
-                  {getLangNameFromCode(loc)?.name ?? loc.toUpperCase()}
-                </span>
-                {loc === locale && <FaCheck className="h-4 w-4" />}
+                <span>{getLanguageDisplayName(lang.code)}</span>
+                {lang.code === locale && <FaCheck className="h-4 w-4" />}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -77,9 +117,7 @@ export default function LanguageSelector() {
           <DrawerTrigger asChild>
             <Button variant="outline" className="flex items-center gap-2">
               <FaGlobe className="h-4 w-4" />
-              <span>
-                {getLangNameFromCode(locale)?.name ?? locale.toUpperCase()}
-              </span>
+              <span>{getLanguageDisplayName(locale)}</span>
               <FaChevronDown className="h-3 w-3" />
             </Button>
           </DrawerTrigger>
@@ -94,19 +132,19 @@ export default function LanguageSelector() {
                 </DrawerClose>
               </div>
               <div className="grid gap-2">
-                {routing.locales.map((loc) => (
+                {availableLanguages.map((lang) => (
                   <Button
-                    key={loc}
+                    key={lang.code}
                     variant="ghost"
                     className="justify-start gap-2"
-                    onClick={() => handleLocaleChange(loc)}
+                    onClick={() => handleLocaleChange(lang.code)}
                     disabled={isPending}
                   >
                     <FaGlobe className="h-4 w-4" />
-                    <span>
-                      {getLangNameFromCode(loc)?.name ?? loc.toUpperCase()}
-                    </span>
-                    {loc === locale && <FaCheck className="ml-auto h-4 w-4" />}
+                    <span>{getLanguageDisplayName(lang.code)}</span>
+                    {lang.code === locale && (
+                      <FaCheck className="ml-auto h-4 w-4" />
+                    )}
                   </Button>
                 ))}
               </div>

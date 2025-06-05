@@ -2,13 +2,14 @@ import type { Locale } from "next-intl";
 import type {
   Footer as FooterType,
   LANGUAGES_QUERYResult,
+  Market,
   Settings,
 } from "types/sanity";
 import React from "react";
 import Link from "next/link";
 import Container from "@/Primitives/Container";
 import SanityImage from "@/Primitives/SanityImage";
-import { FOOTER_QUERY, SETTINGS_QUERY } from "lib/sanity/query";
+import { FOOTER_QUERY, MARKETS_QUERY, SETTINGS_QUERY } from "lib/sanity/query";
 
 import { sanityFetch } from "@repo/sanity";
 
@@ -20,7 +21,7 @@ interface FooterProps {
 }
 
 export default async function Footer({ language, languages }: FooterProps) {
-  // Fetch footer data and settings in parallel
+  // Fetch footer data, settings, and market data in parallel
   const [footerData, settingsData] = await Promise.all([
     sanityFetch({
       query: FOOTER_QUERY,
@@ -32,11 +33,16 @@ export default async function Footer({ language, languages }: FooterProps) {
     }) as Promise<{ data: Settings | null }>,
   ]);
 
-  console.log("Footer Data:", footerData);
-
   if (!footerData.data) {
     return null;
   }
+
+  const marketsData = (await sanityFetch({
+    query: MARKETS_QUERY,
+    params: { code: footerData.data.market },
+  })) as { data: Market[] };
+
+  const availableLanguages = marketsData.data[0]?.languages ?? languages;
 
   // Helper function to render links based on type
   const renderLink = (
@@ -100,7 +106,6 @@ export default async function Footer({ language, languages }: FooterProps) {
             )}
 
             {/* Footer Columns */}
-
             {footerData.data.columns.map((column, index) => (
               <div key={index} className="mt-12 min-w-[150px] flex-1">
                 <h3 className="mb-4 text-sm font-semibold text-gray-900">
@@ -115,10 +120,12 @@ export default async function Footer({ language, languages }: FooterProps) {
             ))}
           </div>
 
-          {/* Language Selector */}
-          {languages.length > 1 && (
+          {/* Language Selector - only show if there are multiple languages available in the current market */}
+          {availableLanguages.length > 1 && (
             <div className="mt-12 flex min-w-[150px] flex-1 justify-end">
-              <LanguageSelector />
+              <LanguageSelector
+                availableLanguages={availableLanguages as LANGUAGES_QUERYResult}
+              />
             </div>
           )}
         </div>

@@ -342,7 +342,7 @@ export const FOOTER_QUERY = defineQuery(`*[
 // Markets Query
 
 export const MARKETS_QUERY = defineQuery(`*[
-  _type == "market"
+  _type == "market" && code == $code
 ] | order(title asc) {
   _id,
   title,
