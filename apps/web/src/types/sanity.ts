@@ -905,748 +905,615 @@ export type LANGUAGES_QUERYResult = Array<{
   code: string;
   isDefault: boolean | null;
 }>;
-// Variable: MARKET_DEFAULT_LANGUAGE_QUERY
-// Query: *[  _type == "market"   && code == $marketCode][0] {  _id,  title,  code,  "defaultLanguage": languages[@->isDefault == true][0]-> {    _id,    title,    code,    isDefault  }}
-export type MARKET_DEFAULT_LANGUAGE_QUERYResult = {
+// Variable: buttonFragment
+// Query: buttons[] {    text,    linkType,    openInNewTab,    variant,    internalLink-> {      _id,      _type,      title,      slug {        _type,        current      }    },    externalLink  }
+export type ButtonFragmentResult = never;
+// Variable: pageBuilderFragment
+// Query: pageBuilder[] {    _type == "hero" => {        _type,  _key,  autoplay,  slideInterval,  slides[] {    title,    subTitle,    contentAlignment,    buttons[] {      text,      linkType,      openInNewTab,      variant,      internalLink-> {        _id,        _type,        title,        slug {          _type,          current        }      },      externalLink    },    mediaType,    image {      asset-> {        _id,        url,        altText,        metadata {          lqip,          dimensions {            width,            height,            aspectRatio          }        }      },      alt,      hotspot,      crop    },    video {      asset-> {        _id,        url      },      alt,      poster {        asset-> {          _id,          url        },        hotspot,        crop      }    }  }    },    _type == "filmStrip" => {        _type,  _key,  cards[] {    _key,    label,    buttons[] {      text,      linkType,      openInNewTab,      variant,      internalLink-> {        _id,        _type,        title,        slug {          _type,          current        }      },      externalLink    },    mediaType,    image {      asset-> {        _id,        url,        altText,        metadata {          lqip,          dimensions {            width,            height,            aspectRatio          }        }      },      alt,      hotspot,      crop    },    video {      asset-> {        _id,        url      },      alt,      poster {        asset-> {          _id,          url        },        hotspot,        crop      }    }  }    },    _type == "accordion" => {        _type,  _key,  title,  allowMultiple,  variant,  panels[] {    _key,    label,    content,    defaultOpen  }    }  }
+export type PageBuilderFragmentResult = never;
+// Variable: HOME_PAGE_QUERY
+// Query: *[  _type == "homePage"  && _id == $docId][0] {  _id,  _type,  title,  language,  market,    pageBuilder[] {    _type == "hero" => {        _type,  _key,  autoplay,  slideInterval,  slides[] {    title,    subTitle,    contentAlignment,    buttons[] {      text,      linkType,      openInNewTab,      variant,      internalLink-> {        _id,        _type,        title,        slug {          _type,          current        }      },      externalLink    },    mediaType,    image {      asset-> {        _id,        url,        altText,        metadata {          lqip,          dimensions {            width,            height,            aspectRatio          }        }      },      alt,      hotspot,      crop    },    video {      asset-> {        _id,        url      },      alt,      poster {        asset-> {          _id,          url        },        hotspot,        crop      }    }  }    },    _type == "filmStrip" => {        _type,  _key,  cards[] {    _key,    label,    buttons[] {      text,      linkType,      openInNewTab,      variant,      internalLink-> {        _id,        _type,        title,        slug {          _type,          current        }      },      externalLink    },    mediaType,    image {      asset-> {        _id,        url,        altText,        metadata {          lqip,          dimensions {            width,            height,            aspectRatio          }        }      },      alt,      hotspot,      crop    },    video {      asset-> {        _id,        url      },      alt,      poster {        asset-> {          _id,          url        },        hotspot,        crop      }    }  }    },    _type == "accordion" => {        _type,  _key,  title,  allowMultiple,  variant,  panels[] {    _key,    label,    content,    defaultOpen  }    }  }}
+export type HOME_PAGE_QUERYResult = {
+  _id: string;
+  _type: "homePage";
+  title: string;
+  language: string | null;
+  market: string | null;
+  pageBuilder: Array<
+    | {
+        _type: "accordion";
+        _key: string;
+        title: string | null;
+        allowMultiple: boolean | null;
+        variant: "bordered" | "default" | "minimal" | null;
+        panels: Array<{
+          _key: string;
+          label: string;
+          content: Array<
+            | {
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }
+            | {
+                asset?: {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+                };
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                caption?: string;
+                _type: "image";
+                _key: string;
+              }
+          >;
+          defaultOpen: boolean | null;
+        }>;
+      }
+    | {
+        _type: "filmStrip";
+        _key: string;
+        cards: Array<{
+          _key: string;
+          label: string;
+          buttons: Array<{
+            text: string;
+            linkType: "external" | "internal";
+            openInNewTab: boolean | null;
+            variant:
+              | "CTA"
+              | "default"
+              | "destructive"
+              | "fullGhost"
+              | "ghost"
+              | "link"
+              | "outline"
+              | "secondary"
+              | null;
+            internalLink: {
+              _id: string;
+              _type: "page";
+              title: string;
+              slug: {
+                _type: "slug";
+                current: string;
+              };
+            } | null;
+            externalLink: string | null;
+          }> | null;
+          mediaType: "image" | "video" | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              altText: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                  aspectRatio: number | null;
+                } | null;
+              } | null;
+            } | null;
+            alt: string;
+            hotspot: SanityImageHotspot | null;
+            crop: SanityImageCrop | null;
+          } | null;
+          video: {
+            asset: {
+              _id: string;
+              url: string | null;
+            } | null;
+            alt: string | null;
+            poster: {
+              asset: {
+                _id: string;
+                url: string | null;
+              } | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          } | null;
+        }>;
+      }
+    | {
+        _type: "hero";
+        _key: string;
+        autoplay: boolean | null;
+        slideInterval: number | null;
+        slides: Array<{
+          title: string;
+          subTitle: string | null;
+          contentAlignment: "center" | "left" | "right" | null;
+          buttons: Array<{
+            text: string;
+            linkType: "external" | "internal";
+            openInNewTab: boolean | null;
+            variant:
+              | "CTA"
+              | "default"
+              | "destructive"
+              | "fullGhost"
+              | "ghost"
+              | "link"
+              | "outline"
+              | "secondary"
+              | null;
+            internalLink: {
+              _id: string;
+              _type: "page";
+              title: string;
+              slug: {
+                _type: "slug";
+                current: string;
+              };
+            } | null;
+            externalLink: string | null;
+          }> | null;
+          mediaType: "image" | "video" | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              altText: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                  aspectRatio: number | null;
+                } | null;
+              } | null;
+            } | null;
+            alt: string;
+            hotspot: SanityImageHotspot | null;
+            crop: SanityImageCrop | null;
+          } | null;
+          video: {
+            asset: {
+              _id: string;
+              url: string | null;
+            } | null;
+            alt: null;
+            poster: {
+              asset: {
+                _id: string;
+                url: string | null;
+              } | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            };
+          } | null;
+        }>;
+      }
+  > | null;
+} | null;
+// Variable: PAGE_QUERY
+// Query: *[  _type == "page"  && slug.current == $slug  && language == $language][0] {  _id,  _type,  title,  slug,  language,    pageBuilder[] {    _type == "hero" => {        _type,  _key,  autoplay,  slideInterval,  slides[] {    title,    subTitle,    contentAlignment,    buttons[] {      text,      linkType,      openInNewTab,      variant,      internalLink-> {        _id,        _type,        title,        slug {          _type,          current        }      },      externalLink    },    mediaType,    image {      asset-> {        _id,        url,        altText,        metadata {          lqip,          dimensions {            width,            height,            aspectRatio          }        }      },      alt,      hotspot,      crop    },    video {      asset-> {        _id,        url      },      alt,      poster {        asset-> {          _id,          url        },        hotspot,        crop      }    }  }    },    _type == "filmStrip" => {        _type,  _key,  cards[] {    _key,    label,    buttons[] {      text,      linkType,      openInNewTab,      variant,      internalLink-> {        _id,        _type,        title,        slug {          _type,          current        }      },      externalLink    },    mediaType,    image {      asset-> {        _id,        url,        altText,        metadata {          lqip,          dimensions {            width,            height,            aspectRatio          }        }      },      alt,      hotspot,      crop    },    video {      asset-> {        _id,        url      },      alt,      poster {        asset-> {          _id,          url        },        hotspot,        crop      }    }  }    },    _type == "accordion" => {        _type,  _key,  title,  allowMultiple,  variant,  panels[] {    _key,    label,    content,    defaultOpen  }    }  }}
+export type PAGE_QUERYResult = {
+  _id: string;
+  _type: "page";
+  title: string;
+  slug: Slug;
+  language: string | null;
+  pageBuilder: Array<
+    | {
+        _type: "accordion";
+        _key: string;
+        title: string | null;
+        allowMultiple: boolean | null;
+        variant: "bordered" | "default" | "minimal" | null;
+        panels: Array<{
+          _key: string;
+          label: string;
+          content: Array<
+            | {
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+                listItem?: "bullet" | "number";
+                markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+                }>;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }
+            | {
+                asset?: {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+                };
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                caption?: string;
+                _type: "image";
+                _key: string;
+              }
+          >;
+          defaultOpen: boolean | null;
+        }>;
+      }
+    | {
+        _type: "filmStrip";
+        _key: string;
+        cards: Array<{
+          _key: string;
+          label: string;
+          buttons: Array<{
+            text: string;
+            linkType: "external" | "internal";
+            openInNewTab: boolean | null;
+            variant:
+              | "CTA"
+              | "default"
+              | "destructive"
+              | "fullGhost"
+              | "ghost"
+              | "link"
+              | "outline"
+              | "secondary"
+              | null;
+            internalLink: {
+              _id: string;
+              _type: "page";
+              title: string;
+              slug: {
+                _type: "slug";
+                current: string;
+              };
+            } | null;
+            externalLink: string | null;
+          }> | null;
+          mediaType: "image" | "video" | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              altText: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                  aspectRatio: number | null;
+                } | null;
+              } | null;
+            } | null;
+            alt: string;
+            hotspot: SanityImageHotspot | null;
+            crop: SanityImageCrop | null;
+          } | null;
+          video: {
+            asset: {
+              _id: string;
+              url: string | null;
+            } | null;
+            alt: string | null;
+            poster: {
+              asset: {
+                _id: string;
+                url: string | null;
+              } | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            } | null;
+          } | null;
+        }>;
+      }
+    | {
+        _type: "hero";
+        _key: string;
+        autoplay: boolean | null;
+        slideInterval: number | null;
+        slides: Array<{
+          title: string;
+          subTitle: string | null;
+          contentAlignment: "center" | "left" | "right" | null;
+          buttons: Array<{
+            text: string;
+            linkType: "external" | "internal";
+            openInNewTab: boolean | null;
+            variant:
+              | "CTA"
+              | "default"
+              | "destructive"
+              | "fullGhost"
+              | "ghost"
+              | "link"
+              | "outline"
+              | "secondary"
+              | null;
+            internalLink: {
+              _id: string;
+              _type: "page";
+              title: string;
+              slug: {
+                _type: "slug";
+                current: string;
+              };
+            } | null;
+            externalLink: string | null;
+          }> | null;
+          mediaType: "image" | "video" | null;
+          image: {
+            asset: {
+              _id: string;
+              url: string | null;
+              altText: string | null;
+              metadata: {
+                lqip: string | null;
+                dimensions: {
+                  width: number | null;
+                  height: number | null;
+                  aspectRatio: number | null;
+                } | null;
+              } | null;
+            } | null;
+            alt: string;
+            hotspot: SanityImageHotspot | null;
+            crop: SanityImageCrop | null;
+          } | null;
+          video: {
+            asset: {
+              _id: string;
+              url: string | null;
+            } | null;
+            alt: null;
+            poster: {
+              asset: {
+                _id: string;
+                url: string | null;
+              } | null;
+              hotspot: SanityImageHotspot | null;
+              crop: SanityImageCrop | null;
+            };
+          } | null;
+        }>;
+      }
+  > | null;
+} | null;
+// Variable: SETTINGS_QUERY
+// Query: *[  _type == "settings"  && language == $language  && market == $market][0] {  _id,  label,  siteTitle,  siteDescription,  logo {    asset-> {      _id,      url    },    hotspot,    crop  },  favicon {    asset-> {      _id,      url    },    hotspot,    crop  },  socialShareImage {    asset-> {      _id,      url    },    hotspot,    crop  },  language,  market}
+export type SETTINGS_QUERYResult = {
+  _id: string;
+  label: string;
+  siteTitle: string;
+  siteDescription: string;
+  logo: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+  } | null;
+  favicon: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+  } | null;
+  socialShareImage: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+  } | null;
+  language: string | null;
+  market: string | null;
+} | null;
+// Variable: NAVIGATION_QUERY
+// Query: *[  _type == "navigation"  && language == $language  && market == $market][0] {  _id,  label,  language,  market,  navigationItems[] {    _type == "navigationLink" => {      _type,      name,      linkType,      openInNewTab,      internalLink-> {        _id,        _type,        title,        slug {          current        }      },      externalLink    },    _type == "navigationDropdown" => {      _type,      title,      columns[] {        title,        links[] {          name,          linkType,          openInNewTab,          internalLink-> {            _id,            _type,            title,            slug {              current            }          },          externalLink        }      }    }  }}
+export type NAVIGATION_QUERYResult = {
+  _id: string;
+  label: string;
+  language: string | null;
+  market: string | null;
+  navigationItems: Array<
+    | {
+        _type: "navigationDropdown";
+        title: string;
+        columns: Array<{
+          title: string | null;
+          links: Array<{
+            name: string;
+            linkType: "external" | "internal";
+            openInNewTab: boolean | null;
+            internalLink: {
+              _id: string;
+              _type: "page";
+              title: string;
+              slug: {
+                current: string;
+              };
+            } | null;
+            externalLink: string | null;
+          }>;
+        }>;
+      }
+    | {
+        _type: "navigationLink";
+        name: string;
+        linkType: "external" | "internal";
+        openInNewTab: boolean | null;
+        internalLink: {
+          _id: string;
+          _type: "page";
+          title: string;
+          slug: {
+            current: string;
+          };
+        } | null;
+        externalLink: string | null;
+      }
+  >;
+} | null;
+// Variable: FOOTER_QUERY
+// Query: *[  _type == "footer"  && language == $language  && market == $market][0] {  _id,  label,  subtitle,  copyrightText,  language,  market,  logo {    asset-> {      _id,      url    },    hotspot,    crop  },  columns[] {    title,    links[] {      name,      linkType,      openInNewTab,      internalLink-> {        _id,        _type,        title,        slug {          current        }      },      externalLink    }  }}
+export type FOOTER_QUERYResult = {
+  _id: string;
+  label: string;
+  subtitle: string | null;
+  copyrightText: string | null;
+  language: string | null;
+  market: string | null;
+  logo: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+  } | null;
+  columns: Array<{
+    title: string;
+    links: Array<{
+      name: string;
+      linkType: "external" | "internal";
+      openInNewTab: boolean | null;
+      internalLink: {
+        _id: string;
+        _type: "page";
+        title: string;
+        slug: {
+          current: string;
+        };
+      } | null;
+      externalLink: string | null;
+    }>;
+  }>;
+} | null;
+// Variable: MARKETS_QUERY
+// Query: *[  _type == "market"] | order(title asc) {  _id,  title,  code,  languages[]-> {    _id,    title,    code,    isDefault  }}
+export type MARKETS_QUERYResult = Array<{
   _id: string;
   title: string;
   code: string;
-  defaultLanguage: {
+  languages: Array<{
     _id: string;
     title: string;
     code: string;
     isDefault: boolean | null;
-  } | null;
+  }>;
+}>;
+// Variable: PERSON_QUERY
+// Query: *[  _type == "person"  && userId == $userId][0] {  _id,  name,  userId,  profileImage,  bookmarks[] {    _key,    reference-> {      _id,      _type,      title,      name,      siteTitle,      label    },    note  },  languages[]-> {    _id,    title,    code,    isDefault  }}
+export type PERSON_QUERYResult = {
+  _id: string;
+  name: string;
+  userId: string;
+  profileImage: string;
+  bookmarks: Array<{
+    _key: string;
+    reference:
+      | {
+          _id: string;
+          _type: "footer";
+          title: null;
+          name: null;
+          siteTitle: null;
+          label: string;
+        }
+      | {
+          _id: string;
+          _type: "language";
+          title: string;
+          name: null;
+          siteTitle: null;
+          label: null;
+        }
+      | {
+          _id: string;
+          _type: "market";
+          title: string;
+          name: null;
+          siteTitle: null;
+          label: null;
+        }
+      | {
+          _id: string;
+          _type: "navigation";
+          title: null;
+          name: null;
+          siteTitle: null;
+          label: string;
+        }
+      | {
+          _id: string;
+          _type: "page";
+          title: string;
+          name: null;
+          siteTitle: null;
+          label: null;
+        }
+      | {
+          _id: string;
+          _type: "person";
+          title: null;
+          name: string;
+          siteTitle: null;
+          label: null;
+        }
+      | {
+          _id: string;
+          _type: "settings";
+          title: null;
+          name: null;
+          siteTitle: string;
+          label: string;
+        };
+    note: string | null;
+  }> | null;
+  languages: Array<{
+    _id: string;
+    title: string;
+    code: string;
+    isDefault: boolean | null;
+  }> | null;
 } | null;
-// Variable: buttonFragment
-// Query: buttons[] {    text,    linkType,    openInNewTab,    variant,    internalLink-> {      _id,      _type,      _ref,      slug {        _type,        current      }    },    externalLink  }
-export type ButtonFragmentResult = never;
-// Variable: pageBuilderFragment
-// Query: pageBuilder[] {      _type == "hero" => {    _type,    _key,    slides[] {      title,      subTitle,        buttons[] {    text,    linkType,    openInNewTab,    variant,    internalLink-> {      _id,      _type,      _ref,      slug {        _type,        current      }    },    externalLink  },      mediaType,      image {        ...,        ...asset-> {          altText,          caption,          ...metadata {            lqip,            ...dimensions {              width,              height            }          }        }      },      video {        asset,        alt,        poster {          asset        }      }    }  },      _type == "filmStrip" => {    _type,    _key,    cards[]{      _key,      label,        buttons[] {    text,    linkType,    openInNewTab,    variant,    internalLink-> {      _id,      _type,      _ref,      slug {        _type,        current      }    },    externalLink  },      mediaType,      image {        ...,        ...asset-> {          altText,          caption,          ...metadata {            lqip,            ...dimensions {              width,              height            }          }        }      },      video{        asset->{          _id,          url        },        alt,        poster{          asset->{            _id,            url          },          alt        }      },      ctaButtons[]{        _key,        label,        linkType,        internalLink->{_ref, slug},        externalLink      }    }  },      _type == "accordion" => {    _type,    _key,    panels[]{      _key,      label,      content    }  }  }
-export type PageBuilderFragmentResult = never;
-// Variable: homeQuery
-// Query: *[_id == $docId][0] {    _id,    _type,    title,    description,    language,      pageBuilder[] {      _type == "hero" => {    _type,    _key,    slides[] {      title,      subTitle,        buttons[] {    text,    linkType,    openInNewTab,    variant,    internalLink-> {      _id,      _type,      _ref,      slug {        _type,        current      }    },    externalLink  },      mediaType,      image {        ...,        ...asset-> {          altText,          caption,          ...metadata {            lqip,            ...dimensions {              width,              height            }          }        }      },      video {        asset,        alt,        poster {          asset        }      }    }  },      _type == "filmStrip" => {    _type,    _key,    cards[]{      _key,      label,        buttons[] {    text,    linkType,    openInNewTab,    variant,    internalLink-> {      _id,      _type,      _ref,      slug {        _type,        current      }    },    externalLink  },      mediaType,      image {        ...,        ...asset-> {          altText,          caption,          ...metadata {            lqip,            ...dimensions {              width,              height            }          }        }      },      video{        asset->{          _id,          url        },        alt,        poster{          asset->{            _id,            url          },          alt        }      },      ctaButtons[]{        _key,        label,        linkType,        internalLink->{_ref, slug},        externalLink      }    }  },      _type == "accordion" => {    _type,    _key,    panels[]{      _key,      label,      content    }  }  },    seoTitle,    seoDescription,    seoImage {      asset->,      alt    },    ogTitle,    ogDescription  }
-export type HomeQueryResult =
-  | {
-      _id: string;
-      _type: "assist.instruction.context";
-      title: string | null;
-      description: null;
-      language: null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "footer";
-      title: null;
-      description: null;
-      language: string | null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "homePage";
-      title: string;
-      description: null;
-      language: string | null;
-      pageBuilder: Array<
-        | {
-            _type: "accordion";
-            _key: string;
-            panels: Array<{
-              _key: string;
-              label: string;
-              content: Array<
-                | {
-                    children?: Array<{
-                      marks?: Array<string>;
-                      text?: string;
-                      _type: "span";
-                      _key: string;
-                    }>;
-                    style?:
-                      | "h2"
-                      | "h3"
-                      | "h4"
-                      | "h5"
-                      | "h6"
-                      | "inline"
-                      | "normal";
-                    listItem?: "bullet" | "number";
-                    markDefs?: Array<{
-                      href?: string;
-                      _type: "link";
-                      _key: string;
-                    }>;
-                    level?: number;
-                    _type: "block";
-                    _key: string;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    caption?: string;
-                    _type: "image";
-                    _key: string;
-                  }
-              >;
-            }>;
-          }
-        | {
-            _type: "filmStrip";
-            _key: string;
-            cards: Array<{
-              _key: string;
-              label: string;
-              buttons: Array<{
-                text: string;
-                linkType: "external" | "internal";
-                openInNewTab: boolean | null;
-                variant:
-                  | "CTA"
-                  | "default"
-                  | "destructive"
-                  | "fullGhost"
-                  | "ghost"
-                  | "link"
-                  | "outline"
-                  | "secondary"
-                  | null;
-                internalLink: {
-                  _id: string;
-                  _type: "page";
-                  _ref: null;
-                  slug: {
-                    _type: "slug";
-                    current: string;
-                  };
-                } | null;
-                externalLink: string | null;
-              }> | null;
-              mediaType: "image" | "video" | null;
-              image:
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                    lqip: string | null;
-                    width: number | null;
-                    height: number | null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                    lqip: string | null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                  }
-                | null;
-              video: {
-                asset: {
-                  _id: string;
-                  url: string | null;
-                } | null;
-                alt: string | null;
-                poster: {
-                  asset: {
-                    _id: string;
-                    url: string | null;
-                  } | null;
-                  alt: null;
-                } | null;
-              } | null;
-              ctaButtons: null;
-            }>;
-          }
-        | {
-            _type: "hero";
-            _key: string;
-            slides: Array<{
-              title: string;
-              subTitle: string | null;
-              buttons: Array<{
-                text: string;
-                linkType: "external" | "internal";
-                openInNewTab: boolean | null;
-                variant:
-                  | "CTA"
-                  | "default"
-                  | "destructive"
-                  | "fullGhost"
-                  | "ghost"
-                  | "link"
-                  | "outline"
-                  | "secondary"
-                  | null;
-                internalLink: {
-                  _id: string;
-                  _type: "page";
-                  _ref: null;
-                  slug: {
-                    _type: "slug";
-                    current: string;
-                  };
-                } | null;
-                externalLink: string | null;
-              }> | null;
-              mediaType: "image" | "video" | null;
-              image:
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                    lqip: string | null;
-                    width: number | null;
-                    height: number | null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                    lqip: string | null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                  }
-                | null;
-              video: {
-                asset: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-                } | null;
-                alt: null;
-                poster: {
-                  asset: {
-                    _ref: string;
-                    _type: "reference";
-                    _weak?: boolean;
-                    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                  } | null;
-                };
-              } | null;
-            }>;
-          }
-      > | null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "language";
-      title: string;
-      description: null;
-      language: null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "market";
-      title: string;
-      description: null;
-      language: null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "navigation";
-      title: null;
-      description: null;
-      language: string | null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "page";
-      title: string;
-      description: null;
-      language: string | null;
-      pageBuilder: Array<
-        | {
-            _type: "accordion";
-            _key: string;
-            panels: Array<{
-              _key: string;
-              label: string;
-              content: Array<
-                | {
-                    children?: Array<{
-                      marks?: Array<string>;
-                      text?: string;
-                      _type: "span";
-                      _key: string;
-                    }>;
-                    style?:
-                      | "h2"
-                      | "h3"
-                      | "h4"
-                      | "h5"
-                      | "h6"
-                      | "inline"
-                      | "normal";
-                    listItem?: "bullet" | "number";
-                    markDefs?: Array<{
-                      href?: string;
-                      _type: "link";
-                      _key: string;
-                    }>;
-                    level?: number;
-                    _type: "block";
-                    _key: string;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    caption?: string;
-                    _type: "image";
-                    _key: string;
-                  }
-              >;
-            }>;
-          }
-        | {
-            _type: "filmStrip";
-            _key: string;
-            cards: Array<{
-              _key: string;
-              label: string;
-              buttons: Array<{
-                text: string;
-                linkType: "external" | "internal";
-                openInNewTab: boolean | null;
-                variant:
-                  | "CTA"
-                  | "default"
-                  | "destructive"
-                  | "fullGhost"
-                  | "ghost"
-                  | "link"
-                  | "outline"
-                  | "secondary"
-                  | null;
-                internalLink: {
-                  _id: string;
-                  _type: "page";
-                  _ref: null;
-                  slug: {
-                    _type: "slug";
-                    current: string;
-                  };
-                } | null;
-                externalLink: string | null;
-              }> | null;
-              mediaType: "image" | "video" | null;
-              image:
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                    lqip: string | null;
-                    width: number | null;
-                    height: number | null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                    lqip: string | null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                  }
-                | null;
-              video: {
-                asset: {
-                  _id: string;
-                  url: string | null;
-                } | null;
-                alt: string | null;
-                poster: {
-                  asset: {
-                    _id: string;
-                    url: string | null;
-                  } | null;
-                  alt: null;
-                } | null;
-              } | null;
-              ctaButtons: null;
-            }>;
-          }
-        | {
-            _type: "hero";
-            _key: string;
-            slides: Array<{
-              title: string;
-              subTitle: string | null;
-              buttons: Array<{
-                text: string;
-                linkType: "external" | "internal";
-                openInNewTab: boolean | null;
-                variant:
-                  | "CTA"
-                  | "default"
-                  | "destructive"
-                  | "fullGhost"
-                  | "ghost"
-                  | "link"
-                  | "outline"
-                  | "secondary"
-                  | null;
-                internalLink: {
-                  _id: string;
-                  _type: "page";
-                  _ref: null;
-                  slug: {
-                    _type: "slug";
-                    current: string;
-                  };
-                } | null;
-                externalLink: string | null;
-              }> | null;
-              mediaType: "image" | "video" | null;
-              image:
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                    lqip: string | null;
-                    width: number | null;
-                    height: number | null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                    lqip: string | null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                    altText: string | null;
-                    caption: null;
-                  }
-                | {
-                    asset?: {
-                      _ref: string;
-                      _type: "reference";
-                      _weak?: boolean;
-                      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                    };
-                    media?: unknown;
-                    hotspot?: SanityImageHotspot;
-                    crop?: SanityImageCrop;
-                    alt: string;
-                    _type: "image";
-                  }
-                | null;
-              video: {
-                asset: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-                } | null;
-                alt: null;
-                poster: {
-                  asset: {
-                    _ref: string;
-                    _type: "reference";
-                    _weak?: boolean;
-                    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-                  } | null;
-                };
-              } | null;
-            }>;
-          }
-      > | null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "person";
-      title: null;
-      description: null;
-      language: null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "sanity.fileAsset";
-      title: string | null;
-      description: string | null;
-      language: null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "sanity.imageAsset";
-      title: string | null;
-      description: string | null;
-      language: null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "settings";
-      title: null;
-      description: null;
-      language: string | null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | {
-      _id: string;
-      _type: "translation.metadata";
-      title: null;
-      description: null;
-      language: null;
-      pageBuilder: null;
-      seoTitle: null;
-      seoDescription: null;
-      seoImage: null;
-      ogTitle: null;
-      ogDescription: null;
-    }
-  | null;
 
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[\n  _type == "language"\n] | order(title asc) {\n  _id,\n  title,\n  code,\n  isDefault\n}': LANGUAGES_QUERYResult;
-    '*[\n  _type == "market" \n  && code == $marketCode\n][0] {\n  _id,\n  title,\n  code,\n  "defaultLanguage": languages[@->isDefault == true][0]-> {\n    _id,\n    title,\n    code,\n    isDefault\n  }\n}': MARKET_DEFAULT_LANGUAGE_QUERYResult;
-    "\n  buttons[] {\n    text,\n    linkType,\n    openInNewTab,\n    variant,\n    internalLink-> {\n      _id,\n      _type,\n      _ref,\n      slug {\n        _type,\n        current\n      }\n    },\n    externalLink\n  }\n": ButtonFragmentResult;
-    '\n  pageBuilder[] {\n    \n  _type == "hero" => {\n    _type,\n    _key,\n    slides[] {\n      title,\n      subTitle,\n      \n  buttons[] {\n    text,\n    linkType,\n    openInNewTab,\n    variant,\n    internalLink-> {\n      _id,\n      _type,\n      _ref,\n      slug {\n        _type,\n        current\n      }\n    },\n    externalLink\n  }\n,\n      mediaType,\n      image {\n        ...,\n        ...asset-> {\n          altText,\n          caption,\n          ...metadata {\n            lqip,\n            ...dimensions {\n              width,\n              height\n            }\n          }\n        }\n      },\n      video {\n        asset,\n        alt,\n        poster {\n          asset\n        }\n      }\n    }\n  }\n,\n    \n  _type == "filmStrip" => {\n    _type,\n    _key,\n    cards[]{\n      _key,\n      label,\n      \n  buttons[] {\n    text,\n    linkType,\n    openInNewTab,\n    variant,\n    internalLink-> {\n      _id,\n      _type,\n      _ref,\n      slug {\n        _type,\n        current\n      }\n    },\n    externalLink\n  }\n,\n      mediaType,\n      image {\n        ...,\n        ...asset-> {\n          altText,\n          caption,\n          ...metadata {\n            lqip,\n            ...dimensions {\n              width,\n              height\n            }\n          }\n        }\n      },\n      video{\n        asset->{\n          _id,\n          url\n        },\n        alt,\n        poster{\n          asset->{\n            _id,\n            url\n          },\n          alt\n        }\n      },\n      ctaButtons[]{\n        _key,\n        label,\n        linkType,\n        internalLink->{_ref, slug},\n        externalLink\n      }\n    }\n  }\n,\n    \n  _type == "accordion" => {\n    _type,\n    _key,\n    panels[]{\n      _key,\n      label,\n      content\n    }\n  }\n\n  }\n': PageBuilderFragmentResult;
-    '\n  *[_id == $docId][0] {\n    _id,\n    _type,\n    title,\n    description,\n    language,\n    \n  pageBuilder[] {\n    \n  _type == "hero" => {\n    _type,\n    _key,\n    slides[] {\n      title,\n      subTitle,\n      \n  buttons[] {\n    text,\n    linkType,\n    openInNewTab,\n    variant,\n    internalLink-> {\n      _id,\n      _type,\n      _ref,\n      slug {\n        _type,\n        current\n      }\n    },\n    externalLink\n  }\n,\n      mediaType,\n      image {\n        ...,\n        ...asset-> {\n          altText,\n          caption,\n          ...metadata {\n            lqip,\n            ...dimensions {\n              width,\n              height\n            }\n          }\n        }\n      },\n      video {\n        asset,\n        alt,\n        poster {\n          asset\n        }\n      }\n    }\n  }\n,\n    \n  _type == "filmStrip" => {\n    _type,\n    _key,\n    cards[]{\n      _key,\n      label,\n      \n  buttons[] {\n    text,\n    linkType,\n    openInNewTab,\n    variant,\n    internalLink-> {\n      _id,\n      _type,\n      _ref,\n      slug {\n        _type,\n        current\n      }\n    },\n    externalLink\n  }\n,\n      mediaType,\n      image {\n        ...,\n        ...asset-> {\n          altText,\n          caption,\n          ...metadata {\n            lqip,\n            ...dimensions {\n              width,\n              height\n            }\n          }\n        }\n      },\n      video{\n        asset->{\n          _id,\n          url\n        },\n        alt,\n        poster{\n          asset->{\n            _id,\n            url\n          },\n          alt\n        }\n      },\n      ctaButtons[]{\n        _key,\n        label,\n        linkType,\n        internalLink->{_ref, slug},\n        externalLink\n      }\n    }\n  }\n,\n    \n  _type == "accordion" => {\n    _type,\n    _key,\n    panels[]{\n      _key,\n      label,\n      content\n    }\n  }\n\n  }\n,\n    seoTitle,\n    seoDescription,\n    seoImage {\n      asset->,\n      alt\n    },\n    ogTitle,\n    ogDescription\n  }\n': HomeQueryResult;
+    "\n  buttons[] {\n    text,\n    linkType,\n    openInNewTab,\n    variant,\n    internalLink-> {\n      _id,\n      _type,\n      title,\n      slug {\n        _type,\n        current\n      }\n    },\n    externalLink\n  }\n": ButtonFragmentResult;
+    '\n  pageBuilder[] {\n    _type == "hero" => {\n      \n  _type,\n  _key,\n  autoplay,\n  slideInterval,\n  slides[] {\n    title,\n    subTitle,\n    contentAlignment,\n    buttons[] {\n      text,\n      linkType,\n      openInNewTab,\n      variant,\n      internalLink-> {\n        _id,\n        _type,\n        title,\n        slug {\n          _type,\n          current\n        }\n      },\n      externalLink\n    },\n    mediaType,\n    image {\n      asset-> {\n        _id,\n        url,\n        altText,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height,\n            aspectRatio\n          }\n        }\n      },\n      alt,\n      hotspot,\n      crop\n    },\n    video {\n      asset-> {\n        _id,\n        url\n      },\n      alt,\n      poster {\n        asset-> {\n          _id,\n          url\n        },\n        hotspot,\n        crop\n      }\n    }\n  }\n\n    },\n    _type == "filmStrip" => {\n      \n  _type,\n  _key,\n  cards[] {\n    _key,\n    label,\n    buttons[] {\n      text,\n      linkType,\n      openInNewTab,\n      variant,\n      internalLink-> {\n        _id,\n        _type,\n        title,\n        slug {\n          _type,\n          current\n        }\n      },\n      externalLink\n    },\n    mediaType,\n    image {\n      asset-> {\n        _id,\n        url,\n        altText,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height,\n            aspectRatio\n          }\n        }\n      },\n      alt,\n      hotspot,\n      crop\n    },\n    video {\n      asset-> {\n        _id,\n        url\n      },\n      alt,\n      poster {\n        asset-> {\n          _id,\n          url\n        },\n        hotspot,\n        crop\n      }\n    }\n  }\n\n    },\n    _type == "accordion" => {\n      \n  _type,\n  _key,\n  title,\n  allowMultiple,\n  variant,\n  panels[] {\n    _key,\n    label,\n    content,\n    defaultOpen\n  }\n\n    }\n  }\n': PageBuilderFragmentResult;
+    '*[\n  _type == "homePage"\n  && _id == $docId\n][0] {\n  _id,\n  _type,\n  title,\n  language,\n  market,\n  \n  pageBuilder[] {\n    _type == "hero" => {\n      \n  _type,\n  _key,\n  autoplay,\n  slideInterval,\n  slides[] {\n    title,\n    subTitle,\n    contentAlignment,\n    buttons[] {\n      text,\n      linkType,\n      openInNewTab,\n      variant,\n      internalLink-> {\n        _id,\n        _type,\n        title,\n        slug {\n          _type,\n          current\n        }\n      },\n      externalLink\n    },\n    mediaType,\n    image {\n      asset-> {\n        _id,\n        url,\n        altText,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height,\n            aspectRatio\n          }\n        }\n      },\n      alt,\n      hotspot,\n      crop\n    },\n    video {\n      asset-> {\n        _id,\n        url\n      },\n      alt,\n      poster {\n        asset-> {\n          _id,\n          url\n        },\n        hotspot,\n        crop\n      }\n    }\n  }\n\n    },\n    _type == "filmStrip" => {\n      \n  _type,\n  _key,\n  cards[] {\n    _key,\n    label,\n    buttons[] {\n      text,\n      linkType,\n      openInNewTab,\n      variant,\n      internalLink-> {\n        _id,\n        _type,\n        title,\n        slug {\n          _type,\n          current\n        }\n      },\n      externalLink\n    },\n    mediaType,\n    image {\n      asset-> {\n        _id,\n        url,\n        altText,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height,\n            aspectRatio\n          }\n        }\n      },\n      alt,\n      hotspot,\n      crop\n    },\n    video {\n      asset-> {\n        _id,\n        url\n      },\n      alt,\n      poster {\n        asset-> {\n          _id,\n          url\n        },\n        hotspot,\n        crop\n      }\n    }\n  }\n\n    },\n    _type == "accordion" => {\n      \n  _type,\n  _key,\n  title,\n  allowMultiple,\n  variant,\n  panels[] {\n    _key,\n    label,\n    content,\n    defaultOpen\n  }\n\n    }\n  }\n\n}': HOME_PAGE_QUERYResult;
+    '*[\n  _type == "page"\n  && slug.current == $slug\n  && language == $language\n][0] {\n  _id,\n  _type,\n  title,\n  slug,\n  language,\n  \n  pageBuilder[] {\n    _type == "hero" => {\n      \n  _type,\n  _key,\n  autoplay,\n  slideInterval,\n  slides[] {\n    title,\n    subTitle,\n    contentAlignment,\n    buttons[] {\n      text,\n      linkType,\n      openInNewTab,\n      variant,\n      internalLink-> {\n        _id,\n        _type,\n        title,\n        slug {\n          _type,\n          current\n        }\n      },\n      externalLink\n    },\n    mediaType,\n    image {\n      asset-> {\n        _id,\n        url,\n        altText,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height,\n            aspectRatio\n          }\n        }\n      },\n      alt,\n      hotspot,\n      crop\n    },\n    video {\n      asset-> {\n        _id,\n        url\n      },\n      alt,\n      poster {\n        asset-> {\n          _id,\n          url\n        },\n        hotspot,\n        crop\n      }\n    }\n  }\n\n    },\n    _type == "filmStrip" => {\n      \n  _type,\n  _key,\n  cards[] {\n    _key,\n    label,\n    buttons[] {\n      text,\n      linkType,\n      openInNewTab,\n      variant,\n      internalLink-> {\n        _id,\n        _type,\n        title,\n        slug {\n          _type,\n          current\n        }\n      },\n      externalLink\n    },\n    mediaType,\n    image {\n      asset-> {\n        _id,\n        url,\n        altText,\n        metadata {\n          lqip,\n          dimensions {\n            width,\n            height,\n            aspectRatio\n          }\n        }\n      },\n      alt,\n      hotspot,\n      crop\n    },\n    video {\n      asset-> {\n        _id,\n        url\n      },\n      alt,\n      poster {\n        asset-> {\n          _id,\n          url\n        },\n        hotspot,\n        crop\n      }\n    }\n  }\n\n    },\n    _type == "accordion" => {\n      \n  _type,\n  _key,\n  title,\n  allowMultiple,\n  variant,\n  panels[] {\n    _key,\n    label,\n    content,\n    defaultOpen\n  }\n\n    }\n  }\n\n}': PAGE_QUERYResult;
+    '*[\n  _type == "settings"\n  && language == $language\n  && market == $market\n][0] {\n  _id,\n  label,\n  siteTitle,\n  siteDescription,\n  logo {\n    asset-> {\n      _id,\n      url\n    },\n    hotspot,\n    crop\n  },\n  favicon {\n    asset-> {\n      _id,\n      url\n    },\n    hotspot,\n    crop\n  },\n  socialShareImage {\n    asset-> {\n      _id,\n      url\n    },\n    hotspot,\n    crop\n  },\n  language,\n  market\n}': SETTINGS_QUERYResult;
+    '*[\n  _type == "navigation"\n  && language == $language\n  && market == $market\n][0] {\n  _id,\n  label,\n  language,\n  market,\n  navigationItems[] {\n    _type == "navigationLink" => {\n      _type,\n      name,\n      linkType,\n      openInNewTab,\n      internalLink-> {\n        _id,\n        _type,\n        title,\n        slug {\n          current\n        }\n      },\n      externalLink\n    },\n    _type == "navigationDropdown" => {\n      _type,\n      title,\n      columns[] {\n        title,\n        links[] {\n          name,\n          linkType,\n          openInNewTab,\n          internalLink-> {\n            _id,\n            _type,\n            title,\n            slug {\n              current\n            }\n          },\n          externalLink\n        }\n      }\n    }\n  }\n}': NAVIGATION_QUERYResult;
+    '*[\n  _type == "footer"\n  && language == $language\n  && market == $market\n][0] {\n  _id,\n  label,\n  subtitle,\n  copyrightText,\n  language,\n  market,\n  logo {\n    asset-> {\n      _id,\n      url\n    },\n    hotspot,\n    crop\n  },\n  columns[] {\n    title,\n    links[] {\n      name,\n      linkType,\n      openInNewTab,\n      internalLink-> {\n        _id,\n        _type,\n        title,\n        slug {\n          current\n        }\n      },\n      externalLink\n    }\n  }\n}': FOOTER_QUERYResult;
+    '*[\n  _type == "market"\n] | order(title asc) {\n  _id,\n  title,\n  code,\n  languages[]-> {\n    _id,\n    title,\n    code,\n    isDefault\n  }\n}': MARKETS_QUERYResult;
+    '*[\n  _type == "person"\n  && userId == $userId\n][0] {\n  _id,\n  name,\n  userId,\n  profileImage,\n  bookmarks[] {\n    _key,\n    reference-> {\n      _id,\n      _type,\n      title,\n      name,\n      siteTitle,\n      label\n    },\n    note\n  },\n  languages[]-> {\n    _id,\n    title,\n    code,\n    isDefault\n  }\n}': PERSON_QUERYResult;
   }
 }

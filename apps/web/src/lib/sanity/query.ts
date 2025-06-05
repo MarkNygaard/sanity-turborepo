@@ -20,7 +20,7 @@ export const buttonFragment = groq`
     internalLink-> {
       _id,
       _type,
-      _ref,
+      title,
       slug {
         _type,
         current
@@ -30,99 +30,140 @@ export const buttonFragment = groq`
   }
 `;
 
-// Page Builder Fragments
+// Page Builder Fragments (as string literals for composition)
 
-export const heroFragment = groq`
-  _type == "hero" => {
-    _type,
-    _key,
-    slides[] {
-      title,
-      subTitle,
-      ${buttonFragment},
-      mediaType,
-      image {
-        ...,
-        ...asset-> {
-          altText,
-          caption,
-          ...metadata {
-            lqip,
-            ...dimensions {
-              width,
-              height
-            }
+const heroFields = `
+  _type,
+  _key,
+  autoplay,
+  slideInterval,
+  slides[] {
+    title,
+    subTitle,
+    contentAlignment,
+    buttons[] {
+      text,
+      linkType,
+      openInNewTab,
+      variant,
+      internalLink-> {
+        _id,
+        _type,
+        title,
+        slug {
+          _type,
+          current
+        }
+      },
+      externalLink
+    },
+    mediaType,
+    image {
+      asset-> {
+        _id,
+        url,
+        altText,
+        metadata {
+          lqip,
+          dimensions {
+            width,
+            height,
+            aspectRatio
           }
         }
       },
-      video {
-        asset,
-        alt,
-        poster {
-          asset
-        }
-      }
-    }
-  }
-`;
-
-export const filmStripFragment = groq`
-  _type == "filmStrip" => {
-    _type,
-    _key,
-    cards[]{
-      _key,
-      label,
-      ${buttonFragment},
-      mediaType,
-      image {
-        ...,
-        ...asset-> {
-          altText,
-          caption,
-          ...metadata {
-            lqip,
-            ...dimensions {
-              width,
-              height
-            }
-          }
-        }
+      alt,
+      hotspot,
+      crop
+    },
+    video {
+      asset-> {
+        _id,
+        url
       },
-      video{
-        asset->{
+      alt,
+      poster {
+        asset-> {
           _id,
           url
         },
-        alt,
-        poster{
-          asset->{
-            _id,
-            url
-          },
-          alt
-        }
-      },
-      ctaButtons[]{
-        _key,
-        label,
-        linkType,
-        internalLink->{_ref, slug},
-        externalLink
+        hotspot,
+        crop
       }
     }
   }
 `;
 
-export const accordionFragment = groq`
-  _type == "accordion" => {
-    _type,
+const filmStripFields = `
+  _type,
+  _key,
+  cards[] {
     _key,
-    panels[]{
-      _key,
-      label,
-      content
+    label,
+    buttons[] {
+      text,
+      linkType,
+      openInNewTab,
+      variant,
+      internalLink-> {
+        _id,
+        _type,
+        title,
+        slug {
+          _type,
+          current
+        }
+      },
+      externalLink
+    },
+    mediaType,
+    image {
+      asset-> {
+        _id,
+        url,
+        altText,
+        metadata {
+          lqip,
+          dimensions {
+            width,
+            height,
+            aspectRatio
+          }
+        }
+      },
+      alt,
+      hotspot,
+      crop
+    },
+    video {
+      asset-> {
+        _id,
+        url
+      },
+      alt,
+      poster {
+        asset-> {
+          _id,
+          url
+        },
+        hotspot,
+        crop
+      }
     }
+  }
+`;
+
+const accordionFields = `
+  _type,
+  _key,
+  title,
+  allowMultiple,
+  variant,
+  panels[] {
+    _key,
+    label,
+    content,
+    defaultOpen
   }
 `;
 
@@ -130,29 +171,219 @@ export const accordionFragment = groq`
 
 export const pageBuilderFragment = groq`
   pageBuilder[] {
-    ${heroFragment},
-    ${filmStripFragment},
-    ${accordionFragment}
+    _type == "hero" => {
+      ${heroFields}
+    },
+    _type == "filmStrip" => {
+      ${filmStripFields}
+    },
+    _type == "accordion" => {
+      ${accordionFields}
+    }
   }
 `;
 
 // Home Page Query
 
-export const homeQuery = groq`
-  *[_id == $docId][0] {
-    _id,
-    _type,
-    title,
-    description,
-    language,
-    ${pageBuilderFragment},
-    seoTitle,
-    seoDescription,
-    seoImage {
-      asset->,
-      alt
+export const HOME_PAGE_QUERY = defineQuery(`*[
+  _type == "homePage"
+  && _id == $docId
+][0] {
+  _id,
+  _type,
+  title,
+  language,
+  market,
+  ${pageBuilderFragment}
+}`);
+
+// Page Query
+
+export const PAGE_QUERY = defineQuery(`*[
+  _type == "page"
+  && slug.current == $slug
+  && language == $language
+][0] {
+  _id,
+  _type,
+  title,
+  slug,
+  language,
+  ${pageBuilderFragment}
+}`);
+
+// Settings Query
+
+export const SETTINGS_QUERY = defineQuery(`*[
+  _type == "settings"
+  && language == $language
+  && market == $market
+][0] {
+  _id,
+  label,
+  siteTitle,
+  siteDescription,
+  logo {
+    asset-> {
+      _id,
+      url
     },
-    ogTitle,
-    ogDescription
+    hotspot,
+    crop
+  },
+  favicon {
+    asset-> {
+      _id,
+      url
+    },
+    hotspot,
+    crop
+  },
+  socialShareImage {
+    asset-> {
+      _id,
+      url
+    },
+    hotspot,
+    crop
+  },
+  language,
+  market
+}`);
+
+// Navigation Query
+
+export const NAVIGATION_QUERY = defineQuery(`*[
+  _type == "navigation"
+  && language == $language
+  && market == $market
+][0] {
+  _id,
+  label,
+  language,
+  market,
+  navigationItems[] {
+    _type == "navigationLink" => {
+      _type,
+      name,
+      linkType,
+      openInNewTab,
+      internalLink-> {
+        _id,
+        _type,
+        title,
+        slug {
+          current
+        }
+      },
+      externalLink
+    },
+    _type == "navigationDropdown" => {
+      _type,
+      title,
+      columns[] {
+        title,
+        links[] {
+          name,
+          linkType,
+          openInNewTab,
+          internalLink-> {
+            _id,
+            _type,
+            title,
+            slug {
+              current
+            }
+          },
+          externalLink
+        }
+      }
+    }
   }
-`;
+}`);
+
+// Footer Query
+
+export const FOOTER_QUERY = defineQuery(`*[
+  _type == "footer"
+  && language == $language
+  && market == $market
+][0] {
+  _id,
+  label,
+  subtitle,
+  copyrightText,
+  language,
+  market,
+  logo {
+    asset-> {
+      _id,
+      url
+    },
+    hotspot,
+    crop
+  },
+  columns[] {
+    title,
+    links[] {
+      name,
+      linkType,
+      openInNewTab,
+      internalLink-> {
+        _id,
+        _type,
+        title,
+        slug {
+          current
+        }
+      },
+      externalLink
+    }
+  }
+}`);
+
+// Markets Query
+
+export const MARKETS_QUERY = defineQuery(`*[
+  _type == "market"
+] | order(title asc) {
+  _id,
+  title,
+  code,
+  languages[]-> {
+    _id,
+    title,
+    code,
+    isDefault
+  }
+}`);
+
+// Person Query (for personalization features)
+
+export const PERSON_QUERY = defineQuery(`*[
+  _type == "person"
+  && userId == $userId
+][0] {
+  _id,
+  name,
+  userId,
+  profileImage,
+  bookmarks[] {
+    _key,
+    reference-> {
+      _id,
+      _type,
+      title,
+      name,
+      siteTitle,
+      label
+    },
+    note
+  },
+  languages[]-> {
+    _id,
+    title,
+    code,
+    isDefault
+  }
+}`);
