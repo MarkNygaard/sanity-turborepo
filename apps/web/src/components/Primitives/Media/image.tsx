@@ -20,7 +20,7 @@ export default function PrimitiveImage({
   imgClassName,
   pictureClassName,
 }: ImageProps) {
-  if (!image?.asset?._ref) return null;
+  if (!image.asset._ref) return null;
 
   const imageUrl = urlFor(image as SanityImageSource)
     .width(800)
@@ -32,7 +32,7 @@ export default function PrimitiveImage({
 
   return (
     <picture className={pictureClassName}>
-      <img src={imageUrl} alt={image.alt || ""} className={imgClassName} />
+      <img src={imageUrl} alt={image.alt ?? ""} className={imgClassName} />
     </picture>
   );
 }

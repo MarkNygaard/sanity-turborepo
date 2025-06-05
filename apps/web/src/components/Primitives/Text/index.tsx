@@ -10,10 +10,7 @@ interface TextProps {
   isDraftMode?: boolean;
 }
 
-export default function PrimitiveText({
-  content,
-  isDraftMode = false,
-}: TextProps) {
+export default function PrimitiveText({ content }: TextProps) {
   if (!content) return null;
 
   return (
