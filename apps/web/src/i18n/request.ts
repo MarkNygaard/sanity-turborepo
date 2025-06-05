@@ -1,4 +1,4 @@
-import { languagesQuery } from "app/lib/sanity/query";
+import { languagesQuery } from "lib/sanity/query";
 import { hasLocale } from "next-intl";
 import { defineRouting } from "next-intl/routing";
 import { getRequestConfig } from "next-intl/server";

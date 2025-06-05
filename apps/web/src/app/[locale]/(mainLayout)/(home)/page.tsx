@@ -1,6 +1,6 @@
 import type { HomePage } from "types/sanity";
-import { homeQuery } from "app/lib/sanity/query";
 import PageBuilder from "components/PageBuilder";
+import { homeQuery } from "lib/sanity/query";
 import { getLocale } from "next-intl/server";
 
 // import { getMetaData } from "utils/seo";
