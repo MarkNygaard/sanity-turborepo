@@ -1,14 +1,41 @@
-import { sanityFetch } from "@repo/sanity";
+import localeData from "./locales.config.json";
 
-import { locales } from "../../../studio/config";
-
-export default async function getAvailableLocales() {
-  return locales;
+export interface Locale {
+  code: string;
+  title: string;
+  isDefault: boolean;
 }
 
-// Export the locales for use in other parts of the application
-export { locales };
+// Get all available locales (from generated config)
+export function getAvailableLocales(): Locale[] {
+  return localeData.languages;
+}
 
-export async function getFallbackLocale() {
-  return locales[0]; //using the first ordered locale as fallback
+// Get default language for a specific market (still from Sanity at runtime if needed)
+export async function getMarketDefaultLanguage(
+  marketCode: string,
+): Promise<string> {
+  try {
+    const { sanityFetch } = await import("@repo/sanity");
+    const { MARKET_DEFAULT_LANGUAGE_QUERY } = await import(
+      "../lib/sanity/query"
+    );
+
+    const marketResult = await sanityFetch({
+      query: MARKET_DEFAULT_LANGUAGE_QUERY,
+      params: { marketCode },
+    });
+
+    // Adjust the type as needed based on the actual result structure
+    const defaultLanguageCode =
+      marketResult.data?.defaultLanguage?.code ?? "en-GB";
+
+    return defaultLanguageCode;
+  } catch (error) {
+    console.error(
+      `Failed to fetch default language for market ${marketCode}:`,
+      error,
+    );
+    return "en-GB";
+  }
 }

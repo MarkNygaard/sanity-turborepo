@@ -12,6 +12,7 @@
     "clean:workspaces": "turbo run clean",
     "dev": "turbo watch dev --continue",
     "dev:web": "turbo watch dev -F web...",
+    "sanity:type": "cd apps/studio && node run-typegen.js && cd ../../packages/sanity && pnpm exec sanity typegen generate",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",

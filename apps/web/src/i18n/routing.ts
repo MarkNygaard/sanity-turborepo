@@ -1,15 +1,6 @@
 import { defineRouting } from "next-intl/routing";
 
-import { sanityFetch } from "@repo/sanity";
-
-function getLocaleData() {
-  const data = await sanityFetch({
-    query: languagesQuery,
-  });
-  return {
-    locales: data.languages.map((l) => l.code),
-  };
-}
+import localeData from "./locales.config.json";
 
 const makeDynamicPath = (path: string) =>
   Object.fromEntries(localeData.locales.map((locale) => [locale, path]));
@@ -20,7 +11,7 @@ const dynamicPathnames = {
 
 export const routing = defineRouting({
   locales: localeData.locales,
-  defaultLocale: "en-GB",
+  defaultLocale: localeData.defaultLocale,
   localePrefix: "as-needed",
   pathnames: dynamicPathnames,
 });

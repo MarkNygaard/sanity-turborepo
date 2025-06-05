@@ -1,15 +1,13 @@
-import { groq } from "next-sanity";
+import { defineQuery, groq } from "next-sanity";
 
-export const languagesQuery = groq`
-  {
-    "languages": *[_type == "language"]|order(title asc) {
-      _id,
-      title,
-      code,
-      isDefault
-    },
-  }
-`;
+export const LANGUAGES_QUERY = defineQuery(`*[
+  _type == "language"
+] | order(title asc) {
+  _id,
+  title,
+  code,
+  isDefault
+}`);
 
 // Primitives
 

@@ -1,0 +1,85 @@
+{
+  "locales": [
+    "en-US",
+    "en-GB",
+    "da-DK",
+    "nl-NL",
+    "en-EU",
+    "fi-FI",
+    "fr-FR",
+    "fr-CH",
+    "de-DE",
+    "de-CH",
+    "it-CH",
+    "nb-NO",
+    "sv-SE"
+  ],
+  "defaultLocale": "en-GB",
+  "languages": [
+    {
+      "code": "en-US",
+      "title": "American English",
+      "isDefault": true
+    },
+    {
+      "code": "en-GB",
+      "title": "British English",
+      "isDefault": true
+    },
+    {
+      "code": "da-DK",
+      "title": "Danish",
+      "isDefault": true
+    },
+    {
+      "code": "nl-NL",
+      "title": "Dutch",
+      "isDefault": true
+    },
+    {
+      "code": "en-EU",
+      "title": "European English",
+      "isDefault": true
+    },
+    {
+      "code": "fi-FI",
+      "title": "Finnish",
+      "isDefault": true
+    },
+    {
+      "code": "fr-FR",
+      "title": "French",
+      "isDefault": true
+    },
+    {
+      "code": "fr-CH",
+      "title": "French - Swiss",
+      "isDefault": false
+    },
+    {
+      "code": "de-DE",
+      "title": "German",
+      "isDefault": true
+    },
+    {
+      "code": "de-CH",
+      "title": "German - Swiss",
+      "isDefault": true
+    },
+    {
+      "code": "it-CH",
+      "title": "Italian - Swiss",
+      "isDefault": false
+    },
+    {
+      "code": "nb-NO",
+      "title": "Norwegian",
+      "isDefault": true
+    },
+    {
+      "code": "sv-SE",
+      "title": "Swedish",
+      "isDefault": true
+    }
+  ]
+}
