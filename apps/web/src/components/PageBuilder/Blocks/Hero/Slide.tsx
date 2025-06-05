@@ -29,9 +29,7 @@ export function Slide({ content, slideCount }: SlideProps) {
             />
           </div>
 
-          {(content.title ??
-            content.subTitle ??
-            content.ctaButtons?.length) && (
+          {content.buttons?.length && (
             <div className="absolute z-10 mt-16 px-4 text-white md:mt-24 lg:mt-24">
               {content.title && (
                 <h1 className="py-2 text-5xl font-extrabold md:text-5xl">

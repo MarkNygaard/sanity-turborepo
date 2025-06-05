@@ -1,9 +1,7 @@
 import type { FilmStrip } from "types/sanity";
 import React from "react";
-import Image from "next/image";
+import SanityImage from "@/Primitives/SanityImage";
 import SanityButtons from "components/Primitives/Link";
-
-import { urlFor } from "@repo/sanity/image";
 
 interface CardProps {
   card: FilmStrip["cards"][number];
@@ -14,8 +12,8 @@ export default function Card({ card }: CardProps) {
     <>
       {card.image && (
         <div className="relative w-full min-w-[300px] md:min-w-[600px] lg:min-w-[300px]">
-          <Image
-            src={urlFor(card.image).width(600).height(800).url()}
+          <SanityImage
+            image={card.image}
             alt={card.image.alt}
             width={600}
             height={800}

@@ -1,3 +1,4 @@
+import type { SanityImageCrop, SanityImageHotspot } from "types/sanity";
 import Image from "next/image";
 
 import { urlFor } from "@repo/sanity/image";
@@ -9,8 +10,8 @@ interface SanityImageType {
     _weak?: boolean;
   };
   media?: unknown;
-  hotspot?: any;
-  crop?: any;
+  hotspot?: SanityImageHotspot | null;
+  crop?: SanityImageCrop | null;
   _type: "image";
 }
 

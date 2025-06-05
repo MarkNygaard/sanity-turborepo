@@ -32,7 +32,7 @@ export const buttonFragment = groq`
 
 // Page Builder Fragments (as string literals for composition)
 
-const heroFields = `
+const heroFields = /* groq */ `
   _type,
   _key,
   autoplay,
@@ -94,7 +94,7 @@ const heroFields = `
   }
 `;
 
-const filmStripFields = `
+const filmStripFields = /* groq */ `
   _type,
   _key,
   cards[] {
@@ -153,7 +153,7 @@ const filmStripFields = `
   }
 `;
 
-const accordionFields = `
+const accordionFields = /* groq */ `
   _type,
   _key,
   title,

@@ -8,7 +8,7 @@ import type {
 } from "types/sanity";
 import Link from "next/link";
 import Container from "@/Primitives/Container";
-import SanityImage from "@/Primitives/SanityImage";
+// import SanityImage from "@/Primitives/SanityImage";
 import { RiSearchLine } from "react-icons/ri";
 
 import { cn } from "@repo/ui";
@@ -29,12 +29,16 @@ export default function Navigation({ navigation, settings }: NavigationProps) {
     if (
       !internalLink ||
       !("slug" in internalLink) ||
-      !internalLink.slug?.current
+      typeof internalLink.slug !== "object" ||
+      !internalLink.slug ||
+      !("current" in internalLink.slug) ||
+      !(
+        typeof internalLink.slug.current === "string" &&
+        internalLink.slug.current
+      )
     )
       return "/";
 
-    // Build URL based on your routing structure
-    // Assuming your routes are /${language}/slug-here
     const language = navigation?.language ?? "en";
     return `/${language}/${internalLink.slug.current}`;
   };
@@ -112,36 +116,31 @@ export default function Navigation({ navigation, settings }: NavigationProps) {
                   );
                 }
 
-                if (item._type === "navigationDropdown") {
-                  const dropdownItem = item as NavigationDropdown;
-                  return (
-                    <li
-                      key={`${item._type}-${index}`}
-                      className="flex items-center"
-                    >
-                      <CategoryPopover
-                        category={{
-                          label: dropdownItem.title || "",
-                          columns:
-                            dropdownItem.columns?.map((col) => ({
-                              title: col.title,
-                              links:
-                                col.links?.map((link) => ({
-                                  name: link.name || "",
-                                  href:
-                                    link.linkType === "internal"
-                                      ? buildInternalUrl(link.internalLink)
-                                      : (link.externalLink ?? "#"),
-                                  target: link.openInNewTab
-                                    ? "_blank"
-                                    : undefined,
-                                })) || [],
-                            })) || [],
-                        }}
-                      />
-                    </li>
-                  );
-                }
+                // Directly handle the navigationDropdown case since the type is guaranteed
+                const dropdownItem = item as NavigationDropdown;
+                return (
+                  <li
+                    key={`${item._type}-${index}`}
+                    className="flex items-center"
+                  >
+                    <CategoryPopover
+                      category={{
+                        label: dropdownItem.title || "",
+                        columns: dropdownItem.columns.map((col) => ({
+                          title: col.title,
+                          links: col.links.map((link) => ({
+                            name: link.name || "",
+                            href:
+                              link.linkType === "internal"
+                                ? buildInternalUrl(link.internalLink)
+                                : (link.externalLink ?? "#"),
+                            target: link.openInNewTab ? "_blank" : undefined,
+                          })),
+                        })),
+                      }}
+                    />
+                  </li>
+                );
 
                 return null;
               })}
