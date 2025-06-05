@@ -1,4 +1,5 @@
 import { assist } from '@sanity/assist'
+import { presentationTool } from 'sanity/presentation'
 import { visionTool } from '@sanity/vision'
 import { Config, defineConfig, PluginOptions } from 'sanity'
 import { structureTool } from 'sanity/structure'
@@ -17,6 +18,7 @@ import { templates } from './schemaTypes/templates'
 import { customStructure } from './structure'
 import { createMarketStructure } from './structure/createMarketStrucure'
 import { fetchLanguagesMarketsAndPerson } from './utils/fetchLanguagesMarketsAndPerson'
+import { presentationUrl } from './plugins/presentationUrl'
 
 const minimalConfigOptions: Omit<PluginOptions, 'name'> = {
   schema: {
@@ -103,6 +105,17 @@ async function getConfigBasedOnMarkets(): Promise<Config> {
         structureTool({
           structure: (S, context) => createMarketStructure(market, S, context),
         }),
+        presentationTool({
+          previewUrl: {
+            origin: 'http://localhost:3000',
+            preview: '/',
+            previewMode: {
+              enable: '/api/draft-mode/enable',
+              disable: '/api/draft-mode/disable',
+            },
+          },
+        }),
+        presentationUrl(),
         visionTool(),
 
         dynamicDocumentInternationalisationConfigForMarkets(market.languages),

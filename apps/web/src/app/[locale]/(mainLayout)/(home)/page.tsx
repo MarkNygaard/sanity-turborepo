@@ -27,8 +27,6 @@ async function fetchHomePageData() {
 export default async function HomePage() {
   const data = await fetchHomePageData();
 
-  console.log("HomePage data:", data);
-
   if (!data.pageBuilder) return null;
 
   return <PageBuilder blocks={data.pageBuilder} />;
