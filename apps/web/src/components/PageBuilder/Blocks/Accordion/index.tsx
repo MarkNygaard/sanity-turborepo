@@ -1,7 +1,7 @@
+import type { Accordion as AccordionType } from "types/sanity";
 import React from "react";
 import Container from "@/Primitives/Container";
 import PrimitiveText from "@/Primitives/Text";
-import { Accordion as AccordionType } from "types/sanity";
 
 import {
   AccordionContent,

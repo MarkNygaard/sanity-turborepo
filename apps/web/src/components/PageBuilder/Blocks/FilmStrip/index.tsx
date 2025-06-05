@@ -1,6 +1,6 @@
+import type { FilmStrip as FilmStripType } from "types/sanity";
 import React from "react";
 import Container from "@/Primitives/Container";
-import { FilmStrip as FilmStripType } from "types/sanity";
 
 import Card from "./Card";
 

@@ -1,11 +1,11 @@
 import type { HomePage } from "types/sanity";
+import { homeQuery } from "app/lib/sanity/query";
 import PageBuilder from "components/PageBuilder";
 import { getLocale } from "next-intl/server";
-import { getMetaData } from "utils/seo";
+
+// import { getMetaData } from "utils/seo";
 
 import { sanityFetch } from "@repo/sanity";
-
-import { homeQuery } from "./home.sanity";
 
 async function fetchHomePageData() {
   const locale = await getLocale();

@@ -1,8 +1,7 @@
+import { languagesQuery } from "app/lib/sanity/query";
 import { hasLocale } from "next-intl";
 import { defineRouting } from "next-intl/routing";
 import { getRequestConfig } from "next-intl/server";
-
-import { locales } from "../../../studio/config";
 
 const localeData = {
   locales: locales.map((l) => l.id),
