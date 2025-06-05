@@ -1,9 +1,9 @@
 import type { SanityImageSource } from "@sanity/asset-utils";
+import type { RichText } from "types/sanity";
 import React from "react";
 import { PortableText } from "@portabletext/react";
-import { RichText } from "types/sanity";
 
-import { urlFor } from "@repo/sanity";
+import { urlFor } from "@repo/sanity/image";
 
 interface TextProps {
   content: RichText;

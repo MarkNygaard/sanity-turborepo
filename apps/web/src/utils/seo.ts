@@ -1,7 +1,7 @@
 import type { SanityImageSource } from "@sanity/asset-utils";
 import type { Metadata } from "next";
 
-import { urlFor } from "@repo/sanity";
+import { urlFor } from "@repo/sanity/image";
 
 interface MetaDataInput {
   _type?: string;

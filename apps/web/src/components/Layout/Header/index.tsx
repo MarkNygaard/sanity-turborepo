@@ -1,32 +1,38 @@
-import { isEmptyDocument } from "datocms-structured-text-utils";
-import {
-  LayoutModelNotificationField,
-  LayoutQuery,
-  SiteLocale,
-} from "types/datocms";
+import type { Locale } from "next-intl";
+import type { Navigation, Settings } from "types/sanity";
+import { NAVIGATION_QUERY, SETTINGS_QUERY } from "lib/sanity/query";
 
-import Navigation from "./Navigation";
-import NotificationStrip from "./NotificationStrip";
-import TopBar from "./TopBar";
+import { sanityFetch } from "@repo/sanity";
 
-type Props = {
-  data: LayoutQuery;
-};
+import NavigationComponent from "./Navigation";
 
-const Header = ({ data }: Props) => {
+// import TopBar from "./TopBar";
+
+interface HeaderProps {
+  language: Promise<Locale>;
+  market: string;
+}
+
+const Header = async ({ language, market }: HeaderProps) => {
+  // Fetch navigation and settings data from Sanity with proper typing
+  const [navigationData, settingsData] = await Promise.all([
+    sanityFetch({
+      query: NAVIGATION_QUERY,
+      params: { language, market },
+    }) as Promise<{ data: Navigation | null }>,
+    sanityFetch({
+      query: SETTINGS_QUERY,
+      params: { language, market },
+    }) as Promise<{ data: Settings | null }>,
+  ]);
+
   return (
     <>
-      {!isEmptyDocument(data.layout?.notification) && (
-        <NotificationStrip
-          notification={
-            data.layout?.notification as LayoutModelNotificationField
-          }
-        />
-      )}
-      {(data.layout?.topBarText || data.layout?.topBarLinks) && (
-        <TopBar data={data} />
-      )}
-      <Navigation data={data} />
+      {/* <TopBar /> */}
+      <NavigationComponent
+        navigation={navigationData.data}
+        settings={settingsData.data}
+      />
     </>
   );
 };

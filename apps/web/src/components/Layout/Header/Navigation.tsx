@@ -1,25 +1,70 @@
 "use client";
 
-import type { ResponsiveImageType } from "react-datocms";
+import type {
+  Navigation,
+  NavigationDropdown,
+  NavigationLink,
+  Settings,
+} from "types/sanity";
 import Link from "next/link";
 import Container from "@/Primitives/Container";
-import PrimitiveLink from "components/Primitives/Link";
-import { Image as DatoImage } from "react-datocms";
+import SanityImage from "@/Primitives/SanityImage";
 import { RiSearchLine } from "react-icons/ri";
-import { DropdownMenuRecord, LayoutQuery, LinkRecord } from "types/datocms";
 
 import { cn } from "@repo/ui";
 
 import CategoryPopover from "./CategoryPopover";
 import { useSmartNav } from "./useSmartNav";
 
-type PropTypes = {
-  data: LayoutQuery;
-};
+interface NavigationProps {
+  navigation: Navigation | null;
+  settings: Settings | null;
+}
 
-export default function Navigation({ data }: PropTypes) {
+export default function Navigation({ navigation, settings }: NavigationProps) {
   const { scrollDirection, isSticky, scrollY } = useSmartNav();
-  const menuItems = data.layout?.menu ?? [];
+  const menuItems = navigation?.navigationItems ?? [];
+
+  const buildInternalUrl = (internalLink: NavigationLink["internalLink"]) => {
+    if (
+      !internalLink ||
+      !("slug" in internalLink) ||
+      !internalLink.slug?.current
+    )
+      return "/";
+
+    // Build URL based on your routing structure
+    // Assuming your routes are /${language}/slug-here
+    const language = navigation?.language ?? "en";
+    return `/${language}/${internalLink.slug.current}`;
+  };
+
+  const renderNavigationLink = (item: NavigationLink) => {
+    const href =
+      item.linkType === "internal"
+        ? buildInternalUrl(item.internalLink)
+        : (item.externalLink ?? "#");
+
+    const target = item.openInNewTab ? "_blank" : undefined;
+    const rel = item.openInNewTab ? "noopener noreferrer" : undefined;
+
+    return (
+      <Link
+        href={href}
+        target={target}
+        rel={rel}
+        className={cn(
+          "cursor-pointer px-3 font-semibold hover:text-gray-700",
+          "focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-black",
+          "no-focus-ring",
+        )}
+      >
+        <span className="border-b-2 border-transparent py-1 transition-all hover:border-black">
+          {item.name}
+        </span>
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -36,27 +81,64 @@ export default function Navigation({ data }: PropTypes) {
         )}
       >
         <Container className="flex h-[60px] items-center justify-between">
+          {/* Logo */}
           <Link href="/" className="relative -m-2 flex w-8 lg:ml-0">
-            <DatoImage
-              data={data.layout?.logo?.responsiveImage as ResponsiveImageType}
-              className="object-contain"
-            />
+            {settings?.logo?.asset ? (
+              <div></div>
+            ) : (
+              // <SanityImage
+              //   image={settings.logo}
+              //   alt={settings.siteTitle || "DILLING"}
+              //   className="object-contain"
+              //   width={32}
+              //   height={32}
+              // />
+              <div className="flex h-8 w-8 items-center justify-center rounded bg-gray-200 text-xs font-bold">
+                {(settings?.siteTitle ?? "DILLING").charAt(0)}
+              </div>
+            )}
           </Link>
+
+          {/* Navigation */}
           <nav aria-label="Main Navigation">
             <ul className="hidden gap-1 md:flex">
-              {menuItems.map((item) => {
-                if (item._modelApiKey === "link") {
+              {menuItems.map((item, index) => {
+                if (item._type === "navigationLink") {
+                  const linkItem = item as NavigationLink;
                   return (
-                    <li key={item.id}>
-                      <PrimitiveLink {...(item as LinkRecord)} />
+                    <li key={`${item._type}-${index}`}>
+                      {renderNavigationLink(linkItem)}
                     </li>
                   );
                 }
 
-                if (item._modelApiKey === "dropdown_menu") {
+                if (item._type === "navigationDropdown") {
+                  const dropdownItem = item as NavigationDropdown;
                   return (
-                    <li key={item.id} className="flex items-center">
-                      <CategoryPopover category={item as DropdownMenuRecord} />
+                    <li
+                      key={`${item._type}-${index}`}
+                      className="flex items-center"
+                    >
+                      <CategoryPopover
+                        category={{
+                          label: dropdownItem.title || "",
+                          columns:
+                            dropdownItem.columns?.map((col) => ({
+                              title: col.title,
+                              links:
+                                col.links?.map((link) => ({
+                                  name: link.name || "",
+                                  href:
+                                    link.linkType === "internal"
+                                      ? buildInternalUrl(link.internalLink)
+                                      : (link.externalLink ?? "#"),
+                                  target: link.openInNewTab
+                                    ? "_blank"
+                                    : undefined,
+                                })) || [],
+                            })) || [],
+                        }}
+                      />
                     </li>
                   );
                 }
@@ -65,6 +147,8 @@ export default function Navigation({ data }: PropTypes) {
               })}
             </ul>
           </nav>
+
+          {/* Search */}
           <div className="relative">
             <div className="pointer-events-none inset-y-0 flex items-center lg:absolute lg:left-3 lg:text-gray-400">
               <RiSearchLine />

@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./client": "./src/client.ts",
-    "./token": "./src/token.ts"
+    "./token": "./src/token.ts",
+    "./image": "./src/image.ts"
   },
   "sideEffects": false,
   "license": "MIT",

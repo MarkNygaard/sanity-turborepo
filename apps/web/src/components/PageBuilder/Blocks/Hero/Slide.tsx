@@ -2,7 +2,7 @@ import type { Hero } from "types/sanity";
 import Image from "next/image";
 import SanityButtons from "@/Primitives/Link";
 
-import { urlFor } from "@repo/sanity";
+import { urlFor } from "@repo/sanity/image";
 import {
   CarouselAutoplayToggle,
   CarouselNext,

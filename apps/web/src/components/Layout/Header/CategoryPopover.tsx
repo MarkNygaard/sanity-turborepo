@@ -1,17 +1,30 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import PrimitiveLink from "components/Primitives/Link";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
-import { DropdownMenuRecord } from "types/datocms";
 
 import { cn } from "@repo/ui";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 
-type Props = {
-  category: DropdownMenuRecord;
-};
+interface CategoryColumn {
+  title?: string;
+  links: {
+    name: string;
+    href: string;
+    target?: string;
+  }[];
+}
+
+interface CategoryData {
+  label: string;
+  columns: CategoryColumn[];
+}
+
+interface Props {
+  category: CategoryData;
+}
 
 export default function CategoryPopover({ category }: Props) {
   const [open, setOpen] = useState(false);
@@ -65,20 +78,31 @@ export default function CategoryPopover({ category }: Props) {
                 className="overflow-hidden bg-white"
               >
                 <div className="relative mx-auto flex w-full max-w-5xl grid-cols-1 justify-center gap-6 p-6">
-                  {category.column.map((col) => (
-                    <div key={col.id} className="min-w-[220px]">
-                      {col.label && (
+                  {category.columns.map((col, index) => (
+                    <div
+                      key={`${col.title ?? "column"}-${index}`}
+                      className="min-w-[220px]"
+                    >
+                      {col.title && (
                         <h3 className="mb-2 text-sm font-bold text-gray-900">
-                          {col.label}
+                          {col.title}
                         </h3>
                       )}
                       <ul className="space-y-1">
-                        {col.links.map((link) => (
-                          <li key={link.id}>
-                            <PrimitiveLink
+                        {col.links.map((link, linkIndex) => (
+                          <li key={`${link.name}-${linkIndex}`}>
+                            <Link
+                              href={link.href}
+                              target={link.target}
+                              rel={
+                                link.target === "_blank"
+                                  ? "noopener noreferrer"
+                                  : undefined
+                              }
                               className="text-gray-500 hover:text-black"
-                              {...link}
-                            />
+                            >
+                              {link.name}
+                            </Link>
                           </li>
                         ))}
                       </ul>

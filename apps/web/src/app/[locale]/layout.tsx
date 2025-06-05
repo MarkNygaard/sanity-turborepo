@@ -1,7 +1,8 @@
 import "styles/globals.css";
 
 import type { HistoryRefresh } from "@sanity/visual-editing";
-import type { GlobalPageProps } from "utils/globalPageProps";
+import type { Locale } from "next-intl";
+import type { ReactNode } from "react";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { Inter } from "next/font/google";
 import { draftMode } from "next/headers";
@@ -17,15 +18,18 @@ import { SanityLive } from "@repo/sanity";
 
 const inter = Inter({ subsets: ["latin"] });
 
-type Params = GlobalPageProps & {
-  children: React.ReactNode;
-};
+interface PageParams {
+  children: ReactNode;
+  params: {
+    locale: Promise<Locale>;
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function Layout({ children, params }: Params) {
+export default async function Layout({ children, params }: PageParams) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();

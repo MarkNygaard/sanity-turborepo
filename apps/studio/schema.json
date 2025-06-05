@@ -4056,6 +4056,13 @@
           "type": "string"
         },
         "optional": true
+      },
+      "market": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
       }
     }
   },

@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import SanityButtons from "components/Primitives/Link";
 
-import { urlFor } from "@repo/sanity";
+import { urlFor } from "@repo/sanity/image";
 
 interface CardProps {
   card: FilmStrip["cards"][number];

@@ -1,4 +1,3 @@
-import imageUrlBuilder from "@sanity/image-url";
 import { defineLive } from "next-sanity";
 
 import { client } from "./client";
@@ -16,9 +15,3 @@ export const { sanityFetch, SanityLive } = defineLive({
   // Required for stand-alone live previews, the token is only shared to the browser if it's a valid Next.js Draft Mode session
   browserToken: token,
 });
-
-const builder = imageUrlBuilder(client);
-
-export function urlFor(source: any) {
-  return builder.image(source);
-}

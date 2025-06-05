@@ -718,6 +718,7 @@ export type Page = {
   slug: Slug;
   pageBuilder?: PageBuilder;
   language?: string;
+  market?: string;
 };
 
 export type InternationalizedArrayReference = Array<

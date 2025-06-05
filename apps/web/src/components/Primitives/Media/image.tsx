@@ -1,7 +1,7 @@
 import type { SanityImageSource } from "@sanity/asset-utils";
 import { SanityImageAsset } from "types/sanity";
 
-import { urlFor } from "@repo/sanity";
+import { urlFor } from "@repo/sanity/image";
 
 interface ImageProps {
   image: {
