@@ -1,6 +1,8 @@
 import { TbBrowser } from 'react-icons/tb'
 import { defineField, defineType } from 'sanity'
 import { PagePreviewMedia } from '../../components/previews/PagePreview'
+import { isUniqueSlugPerLanguage } from '../../utils/slugValidation'
+import SlugWithLanguageHelper from '../../components/inputs/SlugWithLanguagesHelper'
 
 export default defineType({
   name: 'page',
@@ -30,9 +32,23 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      components: {
+        input: SlugWithLanguageHelper,
+      },
       validation: (Rule) => Rule.required().error('Slug is required for page URLs'),
       options: {
         source: 'title',
+        isUnique: isUniqueSlugPerLanguage,
+        // Add a custom slugify function that handles international characters better
+        slugify: (input) =>
+          input
+            .toLowerCase()
+            .normalize('NFD') // Decompose accented characters
+            .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+            .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+            .trim()
+            .replace(/\s+/g, '-') // Replace spaces with hyphens
+            .replace(/-+/g, '-'), // Remove consecutive hyphens
       },
       group: 'settings',
     }),
@@ -65,9 +81,10 @@ export default defineType({
       title: 'title',
       language: 'language',
       market: 'market',
+      slug: 'slug.current',
     },
-    prepare({ title, language, market }) {
-      const subtitle = `${market?.toUpperCase() || 'Global'}${language ? ` • ${language.toUpperCase()}` : ''}`
+    prepare({ title, language, market, slug }) {
+      const subtitle = `${market?.toUpperCase() || 'Global'}${language ? ` • ${language.toUpperCase()}` : ''} • /${language || 'en'}/${slug || 'no-slug'}`
 
       return {
         title,
