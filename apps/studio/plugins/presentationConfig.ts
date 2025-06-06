@@ -1,6 +1,7 @@
 import { presentationTool } from 'sanity/presentation'
 import { Market } from '../utils/fetchLanguagesMarketsAndPerson'
 import { presentationUrl } from './presentationUrl'
+import { documentLocationsConfig, getMarketDocumentResolvers } from './documentLocations'
 
 export function createPresentationToolConfig(market: Market) {
   // Get the default language for this market
@@ -19,6 +20,13 @@ export function createPresentationToolConfig(market: Market) {
         enable: '/api/draft-mode/enable',
         disable: '/api/draft-mode/disable',
       },
+    },
+    resolve: {
+      // Main document resolver
+      mainDocuments: getMarketDocumentResolvers(market),
+
+      // Document locations resolver (imported from documentLocations)
+      locations: documentLocationsConfig,
     },
   })
 }
