@@ -4,6 +4,7 @@ import { Person } from '../schemaTypes/documents/person.document'
 import { hiddenDocTypes } from './hiddenDocTypes'
 import { internationalisedHomePagesStructure } from './internationalisedHomePagesStructure'
 import { internationalisedPagesStructure } from './internationalisedPagesStructure'
+import { groupedPagesStructure } from './groupedPagesStructure' // New import
 import { personalStructure } from './personalStructure'
 import { internationalisedSettingsStructure } from './internationalisedSettingsStructure'
 import { internationalisedNavigationStructure } from './internationalisedNavigationStructure'
@@ -38,7 +39,10 @@ export const customStructure = async (
 
       S.divider(),
 
-      S.listItem().title(`All Pages`).child(S.documentTypeList('page').title('Pages')),
+      // NEW: Grouped Pages - shows one page per internal title with preference for en-GB
+      await groupedPagesStructure(S, context),
+
+      // Keep the detailed internationalized pages structure for power users
       await internationalisedPagesStructure(S, context),
 
       S.divider(),

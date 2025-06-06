@@ -40,16 +40,15 @@ export default defineType({
       options: {
         source: 'title',
         isUnique: isUniqueSlugPerLanguage,
-        // Add a custom slugify function that handles international characters better
         slugify: (input) =>
           input
             .toLowerCase()
-            .normalize('NFD') // Decompose accented characters
-            .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
-            .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s-]/g, '')
             .trim()
-            .replace(/\s+/g, '-') // Replace spaces with hyphens
-            .replace(/-+/g, '-'), // Remove consecutive hyphens
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-'),
       },
       group: 'settings',
     }),
