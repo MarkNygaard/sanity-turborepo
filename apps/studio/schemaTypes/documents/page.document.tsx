@@ -3,6 +3,7 @@ import { defineField, defineType } from 'sanity'
 import { PagePreviewMedia } from '../../components/previews/PagePreview'
 import { isUniqueSlugPerLanguage } from '../../utils/slugValidation'
 import SlugWithLanguageHelper from '../../components/inputs/SlugWithLanguagesHelper'
+import SmartMarketField from '../../components/inputs/SmartMarketField'
 
 export default defineType({
   name: 'page',
@@ -71,9 +72,12 @@ export default defineType({
       name: 'market',
       title: 'Market',
       type: 'string',
-      readOnly: true,
+      components: {
+        input: SmartMarketField,
+      },
+      validation: (Rule) => Rule.required().error('Market is required for content organization'),
       group: 'settings',
-      description: 'This field is automatically managed by the system',
+      description: 'Market assignment based on selected language availability',
     }),
   ],
   preview: {
