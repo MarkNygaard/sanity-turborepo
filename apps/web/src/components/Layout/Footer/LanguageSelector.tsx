@@ -72,7 +72,10 @@ export default function LanguageSelector({
     }
 
     startTransition(() => {
-      router.replace({ pathname, params: { slug } }, { locale: nextLocale });
+      router.replace(
+        { pathname, params: { slug: "/" } },
+        { locale: nextLocale },
+      );
     });
   };
 
