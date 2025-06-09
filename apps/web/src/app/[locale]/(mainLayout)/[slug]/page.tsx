@@ -1,4 +1,3 @@
-import type { QueryParams } from "next-sanity";
 import type { Page } from "types/sanity";
 import { notFound } from "next/navigation";
 import PageBuilder from "components/PageBuilder";

@@ -12,6 +12,8 @@ export default [
       ...nextPlugin.configs["core-web-vitals"].rules,
       // TypeError: context.getAncestors is not a function
       "@next/next/no-duplicate-head": "off",
+      // Next.js 15 made params and searchParams promises, but ESLint doesn't know this yet
+      "@typescript-eslint/await-thenable": "off",
     },
   },
 ];

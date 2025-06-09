@@ -14,7 +14,9 @@
       "Bash(pnpm dev:*)",
       "Bash(pnpm remove:*)",
       "Bash(node:*)",
-      "Bash(volta:*)"
+      "Bash(volta:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm run lint:*)"
     ],
     "deny": []
   }
