@@ -60,7 +60,8 @@ export const presentationUrl = definePlugin(() => {
                   const currentPath = router.state.space || ''
 
                   // Construct the full preview URL
-                  const baseUrl = 'http://localhost:3000' // This should match your Next.js dev server
+                  const baseUrl =
+                    process.env.SANITY_STUDIO_PRESENTATION_URL ?? 'http://localhost:3000'
                   const previewUrl = `${baseUrl}${previewPath}?preview=true`
 
                   // Navigate to presentation mode within the current workspace

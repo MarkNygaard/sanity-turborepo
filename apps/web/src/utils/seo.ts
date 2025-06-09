@@ -41,7 +41,7 @@ function getBaseUrl(): string {
   if (typeof window !== "undefined") {
     return window.location.origin;
   }
-  return process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 }
 
 function getOgImage(image?: MetaDataInput["seoImage"]): string | undefined {
@@ -49,7 +49,7 @@ function getOgImage(image?: MetaDataInput["seoImage"]): string | undefined {
   return urlFor(image as SanityImageSource).url();
 }
 
-export async function getMetaData(data: MetaDataInput = {}): Promise<Metadata> {
+export function getMetaData(data: MetaDataInput = {}): Promise<Metadata> {
   const {
     _type,
     seoDescription,
@@ -66,8 +66,8 @@ export async function getMetaData(data: MetaDataInput = {}): Promise<Metadata> {
   const ogImageUrl = getOgImage(seoImage);
 
   const meta = {
-    title: seoTitle || title || "Home",
-    description: seoDescription || description || "",
+    title: seoTitle ?? title ?? "Home",
+    description: seoDescription ?? description ?? "",
   };
 
   return {
@@ -75,8 +75,8 @@ export async function getMetaData(data: MetaDataInput = {}): Promise<Metadata> {
     description: meta.description,
     metadataBase: new URL(baseUrl),
     openGraph: {
-      title: ogTitle || meta.title,
-      description: ogDescription || meta.description,
+      title: ogTitle ?? meta.title,
+      description: ogDescription ?? meta.description,
       images: ogImageUrl ? [ogImageUrl] : [],
       type: "website",
       url: baseUrl,

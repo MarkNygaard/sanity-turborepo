@@ -10,7 +10,7 @@ export function createPresentationToolConfig(market: Market) {
 
   return presentationTool({
     previewUrl: {
-      origin: 'http://localhost:3000',
+      origin: process.env.SANITY_STUDIO_PRESENTATION_URL ?? 'http://localhost:3000',
       preview: `/${defaultLanguage}`,
       previewMode: {
         enable: '/api/draft-mode/enable',
