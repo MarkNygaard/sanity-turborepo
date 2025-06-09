@@ -53,7 +53,7 @@
     },
     {
       "code": "fr-CH",
-      "title": "French - Swiss",
+      "title": "French Swiss",
       "isDefault": false
     },
     {
@@ -63,12 +63,12 @@
     },
     {
       "code": "de-CH",
-      "title": "German - Swiss",
+      "title": "German Swiss",
       "isDefault": true
     },
     {
       "code": "it-CH",
-      "title": "Italian - Swiss",
+      "title": "Italian Swiss",
       "isDefault": false
     },
     {
