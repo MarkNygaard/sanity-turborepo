@@ -7,7 +7,7 @@ import { fetchCurrentUser } from './fetchCurrentUser'
 const client = createClient({
   projectId: projectId,
   dataset: dataset,
-  useCdn: false,
+  useCdn: process.env.NODE_ENV === 'production',
   apiVersion: apiVersion,
   perspective: 'published',
   withCredentials: true,

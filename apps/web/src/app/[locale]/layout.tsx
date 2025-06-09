@@ -12,7 +12,6 @@ import { routing } from "i18n/routing";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { VisualEditing } from "next-sanity";
-import { preconnect, prefetchDNS } from "react-dom";
 
 import { SanityLive } from "@repo/sanity";
 
@@ -35,9 +34,6 @@ export default async function Layout({ children, params }: PageParams) {
     notFound();
   }
   setRequestLocale(locale);
-
-  preconnect("https://cdn.sanity.io");
-  prefetchDNS("https://cdn.sanity.io");
 
   const { isEnabled } = await draftMode();
 

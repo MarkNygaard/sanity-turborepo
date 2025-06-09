@@ -8,6 +8,8 @@ import { getLocale } from "next-intl/server";
 
 import { sanityFetch } from "@repo/sanity";
 
+export const dynamicParams = true;
+
 async function fetchHomePageData() {
   const locale = await getLocale();
   const result = await sanityFetch({
