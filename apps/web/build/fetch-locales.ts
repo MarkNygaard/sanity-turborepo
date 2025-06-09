@@ -1,14 +1,6 @@
-import { createClient } from "@sanity/client";
+import { client } from "@repo/sanity/client";
 
 import { LANGUAGES_QUERY } from "../src/lib/sanity/query";
-
-const client = createClient({
-  projectId: process.env.SANITY_STUDIO_PROJECT_ID!,
-  dataset: process.env.SANITY_STUDIO_DATASET!,
-  useCdn: false,
-  apiVersion: process.env.SANITY_STUDIO_APIVERSION || "2025-03-01",
-  token: process.env.SANITY_STUDIO_API_TOKEN,
-});
 
 export async function fetchLocales() {
   try {
@@ -19,7 +11,7 @@ export async function fetchLocales() {
     }
 
     const locales = languages.map((lang: any) => lang.code);
-    const defaultLocale = "en-GB"; // Global default for next-intl
+    const defaultLocale = "en-GB";
 
     return {
       locales,

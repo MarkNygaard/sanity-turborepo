@@ -49,6 +49,11 @@
   },
   "globalEnv": [
     "URL",
-    "NODE_ENV"
+    "NODE_ENV",
+    "SANITY_STUDIO_PROJECT_ID",
+    "SANITY_STUDIO_DATASET",
+    "SANITY_STUDIO_API_TOKEN",
+    "SANITY_STUDIO_URL",
+    "SANITY_STUDIO_APIVERSION"
   ]
 }
