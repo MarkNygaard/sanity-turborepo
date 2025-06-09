@@ -10,14 +10,7 @@ import {
   Accordion as UIAccordion,
 } from "@repo/ui/accordion";
 
-interface AccordionProps extends AccordionType {
-  isDraftMode?: boolean;
-}
-
-export default function Accordion({
-  panels,
-  isDraftMode = false,
-}: AccordionProps) {
+export default function Accordion({ panels }: AccordionType) {
   if (panels.length === 0) return null;
 
   return (
@@ -27,7 +20,7 @@ export default function Accordion({
           <AccordionItem key={item._key} value={item._key}>
             <AccordionTrigger>{item.label}</AccordionTrigger>
             <AccordionContent>
-              <PrimitiveText content={item.content} isDraftMode={isDraftMode} />
+              <PrimitiveText content={item.content} />
             </AccordionContent>
           </AccordionItem>
         ))}

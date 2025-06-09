@@ -6,8 +6,7 @@ import { PortableText } from "@portabletext/react";
 import { urlFor } from "@repo/sanity/image";
 
 interface TextProps {
-  content: RichText;
-  isDraftMode?: boolean;
+  content: RichText | null | undefined;
 }
 
 export default function PrimitiveText({ content }: TextProps) {
