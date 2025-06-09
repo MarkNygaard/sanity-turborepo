@@ -1,5 +1,6 @@
 import type { HomePage } from "types/sanity";
 import PageBuilder from "components/PageBuilder";
+import { routing } from "i18n/routing";
 import { HOME_PAGE_QUERY } from "lib/sanity/query";
 import { getLocale } from "next-intl/server";
 
@@ -16,11 +17,9 @@ async function fetchHomePageData() {
   return result.data as HomePage;
 }
 
-// export async function generateMetadata() {
-//   const locale = await getLocale();
-//   const data = await fetchHomePageData(locale);
-//   return await getMetaData(data);
-// }
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export default async function HomePage() {
   const data = await fetchHomePageData();

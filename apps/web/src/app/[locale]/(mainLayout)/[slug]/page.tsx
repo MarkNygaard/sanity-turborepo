@@ -1,6 +1,7 @@
 import type { Page } from "types/sanity";
 import { notFound } from "next/navigation";
 import PageBuilder from "components/PageBuilder";
+import { routing } from "i18n/routing";
 import { PAGE_QUERY } from "lib/sanity/query";
 import { getLocale } from "next-intl/server";
 
@@ -17,6 +18,10 @@ async function fetchSlugPageData(
       params: { language: locale, slug: slug },
     }),
   );
+}
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
 }
 
 export default async function HomePage({
