@@ -6,8 +6,6 @@ import { sanityFetch } from "@repo/sanity";
 
 import NavigationComponent from "./Navigation";
 
-// import TopBar from "./TopBar";
-
 interface HeaderProps {
   language: Promise<Locale>;
 }
@@ -26,13 +24,10 @@ const Header = async ({ language }: HeaderProps) => {
   ]);
 
   return (
-    <>
-      {/* <TopBar /> */}
-      <NavigationComponent
-        navigation={navigationData.data}
-        settings={settingsData.data}
-      />
-    </>
+    <NavigationComponent
+      navigation={navigationData.data}
+      settings={settingsData.data}
+    />
   );
 };
 

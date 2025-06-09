@@ -1,130 +1,146 @@
-# Turborepo starter using Next.js 15 with DatoCMS, cache tags invalidation, shadcn/ui and next-intl
+# Turborepo starter using Next.js 15 with Sanity CMS, shadcn/ui and next-intl
 
-> [!NOTE]
->
-> This starter is heavily inspired by DatoCMS own eCommerce demo and their cache-tags starter. Find the repos here: [ecommerce-website-demo](https://github.com/datocms/ecommerce-website-demo) and [nextjs-with-cache-tags-starter](https://github.com/datocms/nextjs-with-cache-tags-starter)
-
-> [!NOTE]
->
-> A lot of inspiration for the basic turborepo settings comes from the Create T3 Turbo repo. Find the repo here: [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo/)
-
-## Demo
-
-Have a look at the end result live:
-
-### [https://datocms-turborepo-web.vercel.app/](https://datocms-turborepo-web.vercel.app/)
+This is a modern monorepo setup combining a **Sanity Studio** with a **Next.js 15 frontend**, featuring internationalization and shared configurations.
 
 ## Getting Started
 
-### Step 1: Clone the DatoCMS project
+### Step 1: Environment Setup
 
-1. [Create an account on DatoCMS](https://datocms.com).
-
-2. Make sure that you have set up the [Github integration on Vercel](https://vercel.com/docs/git/vercel-for-github).
-
-3. Press this button to create a new project on DatoCMS containing the data expected by this project:
-
-[![Clone DatoCMS project](https://dashboard.datocms.com/clone/button.svg)](https://dashboard.datocms.com/clone?projectId=158348&name=datocms-turborepo)
-
-Once the setup of the project is done, clone the repo locally.
-
-### Step 2: Environment variables
-
-In your DatoCMS' project, go to the **Settings** menu at the top and click **API tokens**.
-
-Then click **Read-only API token** and copy the token.
-
-Next, copy the `.env.example` file in apps/web to `.env` in the same directory (which will be ignored by Git):
+Copy the environment example files:
 
 ```bash
-cp .env.example .env
+# For the web app
+cp apps/web/.env.example apps/web/.env
+
+# For the studio
+cp apps/studio/.env.example apps/studio/.env
 ```
 
-and set the `DATOCMS_READONLY_API_TOKEN` variable as the API token you just copied.
+Set up your Sanity project variables in both environment files.
 
-##### `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`
-
-Simply click the following button to create and initialize a Turso database with the expected schema (sign up or log in to Turso is required):
-
-[![Create a database with Turso](https://sqlite.new/button)](https://sqlite.new?dump=https%3A//raw.githubusercontent.com/datocms/nextjs-with-cache-tags-starter/main/schema.sql)
-
-If you don't see the query_cache_tags table in your turso database you can create it with the SQL console. Input and run the following:
-
-```
-CREATE TABLE IF NOT EXISTS query_cache_tags (
-  query_id TEXT NOT NULL,
-  cache_tag TEXT NOT NULL,
-  PRIMARY KEY (query_id, cache_tag)
-);
-```
-
-Copy the database URL and use it to fill the `TURSO_DATABASE_URL` environment variable.
-
-Also create a token for the database, with no expiration and read/write permissions: copy and use it for the `TURSO_AUTH_TOKEN` variable.
-
-Set the remaining environment variables. A secret token that is being used for WebPreviews and Cache invalidation token you should add to your webhook in DatoCMS:
-
-```
-URL=http://localhost:3000
-DRAFT_SECRET_TOKEN=superSecretToken
-CACHE_INVALIDATION_SECRET_TOKEN=superSecretToken
-```
-
-### Step 3: Run your project locally
+### Step 2: Install Dependencies
 
 ```bash
 pnpm install
-pnpm dev
 ```
 
-Your site will be up and running on [http://localhost:3000](http://localhost:3000)!
+### Step 3: Start Development
 
-### Step 4: Deploy to Vercel
+```bash
+# Start all apps (studio + web)
+pnpm dev
 
-Override the Build Command in Vercel and set it to: cd ../.. && npx turbo run build --filter=web
+# Or start individually
+pnpm dev --filter=studio    # Sanity Studio
+pnpm dev --filter=web       # Next.js frontend
+```
 
-## Additional Information
+Your sites will be running on:
+- **Studio**: [http://localhost:3333](http://localhost:3333)
+- **Web**: [http://localhost:3000](http://localhost:3000)
 
-The template works both with a single language and with multiple languages.
+## Architecture Overview
 
-The first language set in DatoCMS will be the default language. The Default langauge wont append the url.
-If you have e.g. English, Italien and Danish languages enabled in DatoCMS the url's will look like the following.
-English: https://localhost:3000
-Italian: https://localhost:3000/it
-Danish: https://localhost:3000/da
+This is a **Turborepo monorepo** combining a **Sanity CMS Studio** with a **Next.js 15 frontend**:
 
-In the footer you will find a Language selector to change between your languages. This language selector will only show if you have multiple languages.
+- **apps/studio**: Sanity Studio v3 with multi-market/language support
+- **apps/web**: Next.js 15 app with internationalization (next-intl)
+- **packages/**: Shared packages for UI components, Sanity utilities, and React hooks
+- **tooling/**: Shared ESLint, Prettier, Tailwind, and TypeScript configurations
 
-After adding a new language in DatoCMS you will need to run pnpm prebuild for next-intl to be able to use it from the generated locales.config.json file.
+### Key Features
 
-#### Structure of the project:
+#### Multi-Market System
+The Studio dynamically creates workspaces based on markets and languages defined in Sanity:
+- Each market gets its own workspace with filtered content
+- Language-specific content with internationalization support
+- Market assignment logic and workspace creation utilities
+
+#### Internationalization
+- **Studio**: Uses Sanity's internationalization plugin for multi-language content
+- **Web**: Server-side i18n with next-intl, dynamic locale routing (`/da-DK`, `/de-DE`, etc.)
+- Default locale is `en-GB` (removed from URL, so `localhost:3000` shows English)
+
+#### Shared Package System
+- **@repo/ui**: shadcn/ui-based component library
+- **@repo/sanity**: Sanity client utilities and image handling  
+- **@repo/hooks**: Shared React hooks across apps
+- All packages use shared tooling configurations
+
+### Project Structure
 
 ```text
 apps
+  ├─ studio
+  │   ├─ Sanity Studio v3
+  │   ├─ Multi-market workspaces
+  │   └─ Internationalization plugin
   └─ web
       ├─ Next.js 15
       ├─ React 19
+      ├─ next-intl i18n
       └─ Tailwind CSS
 packages
-  ├─ datocms
-  |   └─ DatoCMS fetcher with cache-tags validation
+  ├─ sanity
+  │   └─ Sanity client utilities and image handling
   ├─ hooks
-  |   └─ General hooks
+  │   └─ Shared React hooks
   └─ ui
-      └─ UI package using shadcn-ui
+      └─ shadcn/ui component library
 tooling
   ├─ eslint
-  |   └─ shared, fine-grained, eslint presets
+  │   └─ Shared ESLint configurations
   ├─ prettier
-  |   └─ shared prettier configuration
+  │   └─ Shared Prettier configuration
   ├─ tailwind
-  |   └─ shared tailwind configuration
+  │   └─ Shared Tailwind configuration
   └─ typescript
-      └─ shared tsconfig you can extend from
+      └─ Shared TypeScript configurations
 ```
 
-Webhook Settings
-<img src="https://github.com/MarkNygaard/datocms-turborepo/raw/main/readme-images/webhook_settings.jpg">
+## Available Commands
 
-Web Previews Settings
-<img src="https://github.com/MarkNygaard/datocms-turborepo/raw/main/readme-images/web_previews_settings.jpg">
+### Essential Development Commands
+```bash
+# Start development environment
+pnpm dev                    # Start all apps (studio + web)
+pnpm dev:web               # Start web app with dependencies only
+
+# Build and type checking
+pnpm build                 # Build all packages and apps
+pnpm typecheck             # Type check all packages
+pnpm sanity:type           # Generate Sanity schema types
+
+# Code quality
+pnpm lint                  # Lint all packages
+pnpm lint:fix              # Fix linting issues
+pnpm format:fix            # Fix formatting issues
+```
+
+### App-Specific Commands
+```bash
+# Studio (Sanity CMS)
+pnpm dev --filter=studio          # Start Studio development
+pnpm deploy --filter=studio       # Deploy Studio to Sanity
+
+# Web (Next.js frontend)  
+pnpm dev --filter=web             # Start Next.js development
+pnpm codegen --filter=web         # Generate GraphQL types
+```
+
+## Technology Stack
+
+- **Package Manager**: pnpm with workspaces
+- **Framework**: Next.js 15 (App Router) + Sanity Studio v3
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **TypeScript**: Comprehensive type safety with shared configurations
+- **Internationalization**: next-intl for frontend, Sanity internationalization plugin for CMS
+- **Data Fetching**: GROQ queries with typed responses
+
+## Development Notes
+
+- Requires Node.js >=20.16.0
+- Environment variables needed for Sanity project configuration
+- Studio deployment is separate from web app deployment
+- Type generation should be run after schema changes (`pnpm sanity:type`)
+- Uses Volta for Node.js version management

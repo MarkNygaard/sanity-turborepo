@@ -55,17 +55,6 @@ export function Slide({ content, slideCount }: SlideProps) {
           )}
         </div>
       )}
-
-      {/* {content.video &&
-        content.video.asset?.playbackId && (
-          <BackgroundVideo
-            video={content.video.asset.playbackId}
-            title={content.title || ""}
-            subtitle={content.subtitle || ""}
-            cta={content.cta as LinkRecord[]}
-            slideCount={slideCount || 0}
-          />,
-        )} */}
     </div>
   );
 }
