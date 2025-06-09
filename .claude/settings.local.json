@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:tailwindcss.com)",
+      "Bash(npx:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm add:*)",
+      "Bash(rm:*)",
+      "Bash(pnpm build:*)",
+      "Bash(mkdir:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(mv:*)",
+      "Bash(ls:*)",
+      "Bash(pnpm dev:*)",
+      "Bash(pnpm remove:*)",
+      "Bash(node:*)",
+      "Bash(volta:*)"
+    ],
+    "deny": []
+  }
+}
