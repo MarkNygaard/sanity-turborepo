@@ -32,7 +32,7 @@
     "@types/node": "^22.9.1",
     "@types/react": "catalog:react19",
     "eslint": "catalog:",
-    "sanity": "^3.90.0",
+    "sanity": "^3.94.0",
     "typescript": "catalog:"
   }
 }

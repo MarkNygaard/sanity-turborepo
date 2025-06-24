@@ -17,6 +17,7 @@ export interface Market {
   _id: string
   title: string
   code: string
+  flag?: string
   languages: {
     code: string
     title: string
@@ -46,6 +47,7 @@ export async function fetchLanguagesMarketsAndPerson() {
         _id,
         title,
         code,
+        flag,
         languages[]->{code, title, _id, isDefault}
       },
       "languages": *[_type == "language"]|order(title asc) {

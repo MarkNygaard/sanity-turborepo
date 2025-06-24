@@ -1,4 +1,5 @@
 import { defineCliConfig } from 'sanity/cli'
+import type { UserConfig } from 'vite'
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID
 const dataset = process.env.SANITY_STUDIO_DATASET
@@ -17,7 +18,7 @@ export default defineCliConfig({
   /**
    * This is needed for the top level await to work during build time.
    */
-  vite: (config) => {
+  vite: (config: UserConfig): UserConfig => {
     return {
       ...config,
       build: {

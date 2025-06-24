@@ -1,0 +1,16 @@
+/* Import flag-icons CSS */
+@import 'flag-icons/css/flag-icons.min.css';
+
+/* Custom flag styling for better display in Sanity */
+.fi {
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Workspace flag styling */
+.workspace-flag {
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
