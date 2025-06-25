@@ -25,13 +25,6 @@ import type { Market } from "../types/Market";
 import { useDeployment } from "../hooks/useDeployment";
 import { useMarkets } from "../hooks/useMarkets";
 
-function getMarketDocument(m: any): Market | null {
-  if (m && typeof m === "object" && "document" in m && m.document) {
-    return m.document as Market;
-  }
-  return null;
-}
-
 export function StudioDeploymentManager() {
   // Use custom hooks
   const { markets, isPending, hasMarkets, totalMarkets, totalLanguages } =
@@ -135,10 +128,7 @@ export function StudioDeploymentManager() {
               text="Deploy All Markets"
               tone="primary"
               onClick={() => {
-                const marketDocs = markets
-                  .map(getMarketDocument)
-                  .filter(Boolean) as Market[];
-                deployAllMarkets(marketDocs);
+                deployAllMarkets(markets);
               }}
               disabled={isDeployingAll || !hasMarkets}
             />
@@ -148,10 +138,12 @@ export function StudioDeploymentManager() {
           <Card padding={4} border radius={2}>
             <Flex align="center" justify="space-between">
               <Box>
-                <Heading size={1}>Global Management Studio</Heading>
-                <Text size={1} muted>
-                  Central administration and market management
-                </Text>
+                <Stack space={2}>
+                  <Heading size={1}>Global Management Studio</Heading>
+                  <Text size={1} muted>
+                    Central administration and market management
+                  </Text>
+                </Stack>
               </Box>
               <Flex align="center" gap={3}>
                 <Badge
@@ -168,27 +160,27 @@ export function StudioDeploymentManager() {
           <Stack space={3}>
             <Heading size={1}>Market-Specific Studios</Heading>
             <Grid columns={2} gap={3}>
-              {markets.map((m) => {
-                const market = getMarketDocument(m);
+              {markets.map((market) => {
                 if (!market) return null;
                 const status = getDeploymentStatus(market.code);
                 return (
                   <Card key={market._id} padding={4} border radius={2}>
-                    <Stack space={3}>
+                    <Stack space={2}>
                       <Flex align="center" justify="space-between">
-                        <Box>
+                        <Flex align="center" gap={2}>
                           <Heading size={1}>{market.title}</Heading>
                           <Text size={1} muted>
                             {market.languages.length} language
                             {market.languages.length !== 1 ? "s" : ""}
                           </Text>
-                        </Box>
+                        </Flex>
+
                         <Text size={4}>
                           {market.flag || market.flagCode || "🌍"}
                         </Text>
                       </Flex>
 
-                      <Box>
+                      <Flex align="center" gap={2}>
                         <Text size={1} weight="medium">
                           Languages:
                         </Text>
@@ -197,7 +189,7 @@ export function StudioDeploymentManager() {
                             .map((lang) => lang.title)
                             .join(", ")}
                         </Text>
-                      </Box>
+                      </Flex>
 
                       <Flex align="center" justify="space-between">
                         <Badge tone={getStatusColor(status.status)}>

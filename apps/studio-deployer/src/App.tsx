@@ -33,7 +33,7 @@ function App() {
     <SanityUI>
       <SanityApp config={sanityConfigs} fallback={<Loading />}>
         <StudioDeploymentManager />
-        <MarketList />
+        {/* <MarketList /> */}
       </SanityApp>
     </SanityUI>
   );
