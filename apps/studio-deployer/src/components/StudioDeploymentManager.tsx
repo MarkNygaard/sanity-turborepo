@@ -21,8 +21,16 @@ import {
 } from "@sanity/ui";
 
 import type { DeploymentStatusType } from "../types";
+import type { Market } from "../types/Market";
 import { useDeployment } from "../hooks/useDeployment";
 import { useMarkets } from "../hooks/useMarkets";
+
+function getMarketDocument(m: any): Market | null {
+  if (m && typeof m === "object" && "document" in m && m.document) {
+    return m.document as Market;
+  }
+  return null;
+}
 
 export function StudioDeploymentManager() {
   // Use custom hooks
@@ -37,7 +45,14 @@ export function StudioDeploymentManager() {
     successfulDeployments,
     failedDeployments,
     activeDeployments,
+    clearDeploymentHistory,
   } = useDeployment();
+
+  // Refresh handler (for now, just reloads the page to re-fetch everything)
+  const handleRefresh = () => {
+    // In a real app, you might want to re-fetch markets and/or deployment statuses via hooks
+    window.location.reload();
+  };
 
   const getStatusIcon = (status: DeploymentStatusType) => {
     switch (status) {
@@ -69,7 +84,7 @@ export function StudioDeploymentManager() {
     return (
       <Container width={4}>
         <Flex align="center" justify="center" padding={4}>
-          <Spinner /> <Text marginLeft={3}>Loading markets...</Text>
+          <Spinner /> <Text style={{ marginLeft: 12 }}>Loading markets...</Text>
         </Flex>
       </Container>
     );
@@ -79,6 +94,36 @@ export function StudioDeploymentManager() {
     <Container width={5}>
       <Box padding={4}>
         <Stack space={4}>
+          {/* Deployment Stats Summary */}
+          <Flex
+            align="center"
+            justify="space-between"
+            style={{ marginBottom: 16 }}
+          >
+            <Stack space={2}>
+              <Text size={1} weight="medium">
+                Deployment Summary
+              </Text>
+              <Flex gap={3}>
+                <Badge tone="positive">
+                  Successful: {successfulDeployments}
+                </Badge>
+                <Badge tone="critical">Failed: {failedDeployments}</Badge>
+                <Badge tone="caution">Active: {activeDeployments}</Badge>
+                <Badge tone="primary">Markets: {totalMarkets}</Badge>
+                <Badge tone="primary">Languages: {totalLanguages}</Badge>
+              </Flex>
+            </Stack>
+            <Button
+              icon={RefreshIcon}
+              text="Refresh"
+              mode="ghost"
+              onClick={handleRefresh}
+              tone="default"
+              style={{ marginLeft: 16 }}
+            />
+          </Flex>
+
           {/* Header */}
           <Flex align="center" justify="space-between">
             <Heading size={2}>
@@ -89,7 +134,12 @@ export function StudioDeploymentManager() {
               icon={RocketIcon}
               text="Deploy All Markets"
               tone="primary"
-              onClick={() => deployAllMarkets(markets)}
+              onClick={() => {
+                const marketDocs = markets
+                  .map(getMarketDocument)
+                  .filter(Boolean) as Market[];
+                deployAllMarkets(marketDocs);
+              }}
               disabled={isDeployingAll || !hasMarkets}
             />
           </Flex>
@@ -118,7 +168,9 @@ export function StudioDeploymentManager() {
           <Stack space={3}>
             <Heading size={1}>Market-Specific Studios</Heading>
             <Grid columns={2} gap={3}>
-              {markets.map((market) => {
+              {markets.map((m) => {
+                const market = getMarketDocument(m);
+                if (!market) return null;
                 const status = getDeploymentStatus(market.code);
                 return (
                   <Card key={market._id} padding={4} border radius={2}>

@@ -1,9 +1,8 @@
-import { defineCliConfig } from "sanity/cli";
+import {defineCliConfig} from 'sanity/cli'
 
 export default defineCliConfig({
   app: {
-    organizationId: process.env.SANITY_ORGANIZATION_ID!,
-    entry: "./src/App.tsx",
-    id: "dilling-studio-deployer",
+    organizationId: 'oSU1Zgt3g',
+    entry: './src/App.tsx',
   },
-});
+})

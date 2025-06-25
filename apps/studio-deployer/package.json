@@ -1,13 +1,14 @@
 {
-  "name": "dilling-studio-deployer",
-  "version": "1.0.0",
+  "name": "studio-deployer",
   "private": true,
+  "version": "1.0.0",
+  "main": "package.json",
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "echo 'App SDK deployment not yet configured'",
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "start": "sanity start",
     "setup": "node setup.js",
     "test-connection": "tsx scripts/test-connection.ts",
     "deploy:all": "tsx scripts/deploy-all-markets.ts",
@@ -15,23 +16,20 @@
     "list:studios": "tsx scripts/list-studios.ts",
     "delete:studio": "tsx scripts/delete-studio.ts"
   },
+  "keywords": [
+    "sanity"
+  ],
   "dependencies": {
-    "@sanity/client": "^7.6.0",
-    "@sanity/icons": "^3.7.4",
+    "@sanity/sdk": "^2.0.1",
     "@sanity/sdk-react": "^2.0.1",
     "@sanity/ui": "^2.16.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "sanity": "^3.94.0",
-    "styled-components": "^6.1.15"
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19",
+    "styled-components": "^6.1.17"
   },
   "devDependencies": {
-    "@types/node": "^22.9.1",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "tsx": "^4.19.3",
-    "typescript": "^5.6.3",
-    "vite": "^6.0.3"
+    "@types/react": "catalog:react19",
+    "sanity": "^3.95.0",
+    "typescript": "catalog:"
   }
 }
