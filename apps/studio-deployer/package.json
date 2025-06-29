@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "dev": "sanity dev",
+    "dev": "sanity dev --port 3334",
     "build": "sanity build",
     "start": "sanity start",
     "setup": "node setup.js",

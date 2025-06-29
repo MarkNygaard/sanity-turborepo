@@ -4,6 +4,7 @@ import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { documentInternationalization } from '@sanity/document-internationalization'
 import { internationalizedArray } from 'sanity-plugin-internationalized-array'
+import { createElement } from 'react'
 
 // Import flag icons CSS
 import './styles/globals.css'
@@ -192,7 +193,21 @@ async function createWorkspaceConfigs() {
     const globalWorkspace = {
       name: 'global',
       title: 'DILLING - Global',
-      icon: createFlagWorkspaceIcon('EU'), // Use EU flag for global or a globe icon
+      icon: () =>
+        createElement(
+          'span',
+          {
+            style: {
+              fontSize: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+              lineHeight: 1,
+            },
+          },
+          '🌍',
+        ),
       projectId,
       dataset,
       basePath: '/global',
@@ -237,7 +252,21 @@ function createFallbackWorkspace() {
     {
       name: 'fallback',
       title: 'DILLING',
-      icon: createFlagWorkspaceIcon('EU'),
+      icon: () =>
+        createElement(
+          'span',
+          {
+            style: {
+              fontSize: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+              lineHeight: 1,
+            },
+          },
+          '🌍',
+        ),
       projectId,
       dataset,
       basePath: '/studio',

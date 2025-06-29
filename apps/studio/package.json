@@ -43,7 +43,7 @@
   "dependencies": {
     "@sanity/assist": "^4.2.0",
     "@sanity/document-internationalization": "^3.3.1",
-    "@sanity/vision": "^3.94.0",
+    "@sanity/vision": "^3.95.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "flag-icons": "^7.5.0",
     "react": "catalog:react19",

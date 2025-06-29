@@ -9,7 +9,8 @@ interface FlagIconProps {
 
 export const FlagIcon: React.FC<FlagIconProps> = ({ countryCode, size = 20, className = '' }) => {
   // Convert country code to lowercase for flag-icons
-  const code = countryCode.toLowerCase()
+  let code = countryCode.toLowerCase()
+  if (code === 'uk') code = 'gb'
 
   return (
     <span
