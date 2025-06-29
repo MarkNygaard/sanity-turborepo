@@ -219,7 +219,7 @@ async function createWorkspaceConfigs() {
 
     // Create market-specific workspaces using flag icons
     for (const market of languagesMarketsAndPerson.markets) {
-      const flagCode = market.flag || market.code || 'EU' // Use flag, fallback to code, then EU
+      const flagCode = market.flagCode || market.code || 'EU' // Use flag, fallback to code, then EU
       const marketWorkspace = {
         name: market.code.toLowerCase(),
         title: `DILLING - ${market.title}`,
